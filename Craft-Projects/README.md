@@ -1,4 +1,7 @@
 # Craft-Projects 
+
+This overview only includes newer crafting projects, as I have not yet documented the older ones.
+
 ## LINKS
 - [Wood_Working](./Wood_Working/Project_Overview.md)
 - [3D_Print](./3D_Print/Project_Overview.md)
