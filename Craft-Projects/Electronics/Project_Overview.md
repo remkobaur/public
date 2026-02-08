@@ -20,8 +20,9 @@
 |  Resistor ColorCodes | 11.09.2018 | <img src="PinOuts/Resistor-ColorCodes.png" alt="placeholder" width="200px" >| |  |
 | Raspberrypi2B | 01.01.2016 | <img src="PinOuts/pinout-Raspberrypi2B.png" alt="placeholder" width="200px" >| |  |
 
-## Promotion 
+## Test Bench 
 |Description|Date|Image Final|Image Sketch|Details
 |-|-|-|-|-|
-| Common Rail Test Bench (PHD) | 10.12.2012 | <img src="TestBench/PST-Foto.png" alt="placeholder" width="200px" >| | angular synchronous conrtoller for high pressure pump and injectors |
+| Common Rail Test Bench (PHD) | 10.12.2012 | <img src="TestBench/PST-Foto.png" alt="placeholder" width="200px" >| | angular synchronous controller for high pressure pump and injectors |
+| Active Lowpass | 22.07.2010 | <img src="TestBench/Filter_Foto.JPG" alt="placeholder" width="200px" >| <img src="TestBench/FZG-Ch1.jpg" alt="placeholder" width="200px" >| Active 4th-order Butterworth low-pass filter for suppressing 50 Hz oscillations in the analog RPM signal caused by the power supply. |
 
