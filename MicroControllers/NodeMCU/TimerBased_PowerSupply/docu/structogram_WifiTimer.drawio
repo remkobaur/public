@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="draw.io" modified="2024-01-15T10:30:00.000Z" agent="5.0" etag="structogram" version="20.8.1" type="device">
+  <diagram id="structogram_wifitimer" name="Page-1">
+    <mxGraphModel dx="1200" dy="650" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        
+        <!-- Title -->
+        <mxCell id="title" value="WifiTimer.ino Main Flow" style="text;html=1;fontSize=18;fontStyle=1;align=center;verticalAlign=middle" vertex="1" parent="1">
+          <mxGeometry x="600" y="20" width="200" height="30" as="geometry"/>
+        </mxCell>
+        
+        <!-- START -->
+        <mxCell id="start" value="START" style="ellipse;whiteSpace=wrap;html=1;fillColor=#90EE90;strokeColor=#228B22;fontSize=12;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="650" y="70" width="100" height="40" as="geometry"/>
+        </mxCell>
+        
+        <!-- setup() block -->
+        <mxCell id="setup" value="setup()" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE6E6;strokeColor=#CC0000;fontSize=11;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="600" y="130" width="200" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge1" edge="1" parent="1" source="start" target="setup">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        <!-- setup() details (container) -->
+        <mxCell id="setup_detail" value="Initialize Hardware &amp; Network&#10;&#10;• init_IOs() - Configure pins, read sensors&#10;• init_WiFi() - Connect to network&#10;• time_synch() - NTP time sync&#10;• loadConfig() - Load EEPROM settings" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF0F0;strokeColor=#FFCCCC;fontSize=9;strokeDasharray=3 3;container=1" vertex="1" parent="1">
+          <mxGeometry x="550" y="180" width="300" height="100" as="geometry"/>
+        </mxCell>
+        
+        <!-- loop() entry -->
+        <mxCell id="loop_label" value="MAIN LOOP (500ms cycle)" style="text;html=1;fontSize=12;fontStyle=1;align=center;fillColor=#FFFFCC;strokeColor=#999999" vertex="1" parent="1">
+          <mxGeometry x="600" y="300" width="200" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge2" edge="1" parent="1" source="setup_detail" target="loop_label">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        <!-- loop() main container -->
+        <mxCell id="loop_container" value="loop() - Core Event Handler&#10;&#10;Runs every 500ms with 250ms delay&#10;&#10;Event Processing" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E6F2FF;strokeColor=#0066CC;fontSize=10;fontStyle=1;container=1;spacing=10" vertex="1" parent="1">
+          <mxGeometry x="450" y="350" width="500" height="400" as="geometry"/>
+        </mxCell>
+        
+        <!-- Button Check Sub-container -->
+        <mxCell id="button_check" value="Button Input Handler&#10;&#10;1. Check if button pressed: isButtonPressed()&#10;2. Toggle relay state: Switch_on() or Switch_off()&#10;3. Log event: Log_write(Status)&#10;4. Reset trigger flag" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF9E6;strokeColor=#FFB84D;fontSize=9;align=left;spacing=3" vertex="1" parent="loop_container">
+          <mxGeometry x="10" y="50" width="220" height="90" as="geometry"/>
+        </mxCell>
+        
+        <!-- Schedule Check Sub-container -->
+        <mxCell id="schedule_check" value="Timer Schedule Evaluation&#10;&#10;1. Get current time: get_time_mm()&#10;2. Evaluate schedules: check_time()&#10;3. Set trigger if time matches window&#10;4. Store schedule match in act_check" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF9E6;strokeColor=#FFB84D;fontSize=9;align=left;spacing=3" vertex="1" parent="loop_container">
+          <mxGeometry x="10" y="155" width="220" height="90" as="geometry"/>
+        </mxCell>
+        
+        <!-- Timer Engine Sub-container -->
+        <mxCell id="timer_engine" value="Timer Engine State Machine&#10;&#10;1. Call my_Timer(t_manual, trigger)&#10;2. Returns: 0=idle, 1=active, 2=finished&#10;3. Switch on return value:&#10;   • Start timer &amp; switch on&#10;   • Maintain ON state&#10;   • Stop timer &amp; switch off&#10;4. Log state change if needed" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF9E6;strokeColor=#FFB84D;fontSize=9;align=left;spacing=3" vertex="1" parent="loop_container">
+          <mxGeometry x="250" y="50" width="240" height="115" as="geometry"/>
+        </mxCell>
+        
+        <!-- Safety Check Sub-container -->
+        <mxCell id="safety_check" value="Safety &amp; Monitoring&#10;&#10;1. isLevelOk() - Water level check&#10;2. Auto-shutdown if critical&#10;3. LED blink alert on low water&#10;4. is_soil_dry() - Read moisture (A0)&#10;5. Update global soil/water status" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF9E6;strokeColor=#FFB84D;fontSize=9;align=left;spacing=3" vertex="1" parent="loop_container">
+          <mxGeometry x="250" y="180" width="240" height="100" as="geometry"/>
+        </mxCell>
+        
+        <!-- Web Server Sub-container -->
+        <mxCell id="web_check" value="Web Server Request Handling&#10;&#10;1. exec_WebServer()&#10;2. Check for HTTP POST requests&#10;3. handleRoot() processes:&#10;   • Timer config updates&#10;   • On/Off commands&#10;   • Manual timer override&#10;4. Send HTML response" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF9E6;strokeColor=#FFB84D;fontSize=9;align=left;spacing=3" vertex="1" parent="loop_container">
+          <mxGeometry x="10" y="260" width="220" height="100" as="geometry"/>
+        </mxCell>
+        
+        <!-- Delay -->
+        <mxCell id="delay_block" value="delay(250ms)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E6CCE6;strokeColor=#9933CC;fontSize=10;fontStyle=1" vertex="1" parent="loop_container">
+          <mxGeometry x="250" y="305" width="240" height="40" as="geometry"/>
+        </mxCell>
+        
+        <!-- END -->
+        <mxCell id="loop_end" value="Loop back to start" style="text;html=1;fontSize=10;align=center;fillColor=#E6F2FF;strokeColor=#0066CC;fontStyle=1" vertex="1" parent="loop_container">
+          <mxGeometry x="250" y="360" width="240" height="30" as="geometry"/>
+        </mxCell>
+        
+        <!-- Arrow from setup to loop -->
+        <mxCell id="edge3" edge="1" parent="1" source="loop_label" target="loop_container">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        <!-- Decision Diamond: Continuous Loop -->
+        <mxCell id="decision" value="Loop&#10;Forever?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FFFFCC;strokeColor=#999999;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="650" y="770" width="100" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge4" edge="1" parent="1" source="loop_container" target="decision">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        <!-- Loop back arrow -->
+        <mxCell id="loop_back" value="Yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=10" edge="1" parent="1" source="decision" target="loop_label">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="550" y="810" x1="-100" y1="0" x2="100" y2="0" as="offset"/>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Legend -->
+        <mxCell id="legend_title" value="Legend" style="text;html=1;fontSize=11;fontStyle=1;align=left" vertex="1" parent="1">
+          <mxGeometry x="50" y="350" width="80" height="20" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="legend_setup" value="Setup Phase (runs once)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE6E6;strokeColor=#CC0000;fontSize=9" vertex="1" parent="1">
+          <mxGeometry x="50" y="380" width="150" height="30" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="legend_loop" value="Loop Phase (500ms cycle)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E6F2FF;strokeColor=#0066CC;fontSize=9" vertex="1" parent="1">
+          <mxGeometry x="50" y="420" width="150" height="30" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="legend_detail" value="Action Details (sub-blocks)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF9E6;strokeColor=#FFB84D;fontSize=9" vertex="1" parent="1">
+          <mxGeometry x="50" y="460" width="150" height="30" as="geometry"/>
+        </mxCell>
+        
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
