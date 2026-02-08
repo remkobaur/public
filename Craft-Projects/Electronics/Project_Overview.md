@@ -7,7 +7,7 @@
 |-|-|-|-|-|
 |  Servo Walker | 05.01.2026 | <img src="Toys/ServoWalker_closed.jpg" alt="placeholder" width="300px" >| <img src="Toys/ServoWalker_opened.jpg" alt="placeholder" width="300px" >|  |
 |  Sleep Light | 04.07.2025 | <img src="Lamps/SleepLight_1.jpg" alt="placeholder" width="200px" >| <img src="Lamps/SleepLight_2.jpg" alt="placeholder" width="170px" >|  |
-|  Soundbox (Raspberry Pi & RFID) | 04.07.2016 | <img src="Toys/SoundBox_1.jpg" alt="placeholder" width="200px" >| <img src="Toys/SoundBox_2.jpg" alt="placeholder" width="200px" >|  |
+|  Soundbox (Raspberry Pi & RFID) | 04.07.2016 | <img src="Toys/SoundBox_1.jpg" alt="placeholder" width="200px" >| <img src="Toys/SoundBox_2.jpg" alt="placeholder" width="200px" >| A soundbox inspired by the "Tony Box" — each cover sheet is identified by an RFID tag and triggers six distinct sounds. |
 
 ## Pinouts 
 |Description|Date|Image Final|Image Sketch|Details
