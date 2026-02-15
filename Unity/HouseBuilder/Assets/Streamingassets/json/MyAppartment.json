@@ -1,0 +1,482 @@
+{
+    "name": "Wohnung",
+    "height": 2.5,
+    "pos": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "wallThickness": 0.15000000596046449,
+    "materials": {
+        "wall": {
+            "instanceID": 6170
+        },
+        "floor": {
+            "instanceID": 6168
+        },
+        "door": {
+            "instanceID": 23742
+        },
+        "window": {
+            "instanceID": 23678
+        }
+    },
+    "rooms": [
+        {
+            "name": "Flur_p1",
+            "length": 1.75,
+            "width": 6.349999904632568,
+            "pos": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "relPlace": {
+                "refRoomName": "",
+                "direction": "N",
+                "offset": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "activeWalls": [
+                false,
+                false,
+                false,
+                false,
+                true,
+                true
+            ],
+            "modules": []
+        },
+        {
+            "name": "Wohnzimmer",
+            "length": 4.949999809265137,
+            "width": 4.0,
+            "pos": {
+                "x": 1.5999999046325684,
+                "y": 5.325000286102295
+            },
+            "relPlace": {
+                "refRoomName": "Flur_p1",
+                "direction": "WS",
+                "offset": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "activeWalls": [
+                true,
+                false,
+                true,
+                true,
+                true,
+                true
+            ],
+            "modules": [
+                {
+                    "wallName": "N",
+                    "type": 2,
+                    "pos_x": -1.2000000476837159,
+                    "pos_y": 0.6000000238418579,
+                    "width": 1.0,
+                    "height": 1.0
+                },
+                {
+                    "wallName": "N",
+                    "type": 2,
+                    "pos_x": 0.20000000298023225,
+                    "pos_y": 0.6000000238418579,
+                    "width": 1.0,
+                    "height": 1.0
+                },
+                {
+                    "wallName": "N",
+                    "type": 1,
+                    "pos_x": 1.399999976158142,
+                    "pos_y": 0.0,
+                    "width": 0.800000011920929,
+                    "height": 2.0
+                },
+                {
+                    "wallName": "E",
+                    "type": 1,
+                    "pos_x": -1.5,
+                    "pos_y": 0.0,
+                    "width": 0.800000011920929,
+                    "height": 2.0
+                }
+            ]
+        },
+        {
+            "name": "Küche",
+            "length": 2.25,
+            "width": 6.699999809265137,
+            "pos": {
+                "x": -2.1500000953674318,
+                "y": 3.9750003814697267
+            },
+            "relPlace": {
+                "refRoomName": "Wohnzimmer",
+                "direction": "SW",
+                "offset": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "activeWalls": [
+                true,
+                true,
+                true,
+                false,
+                true,
+                true
+            ],
+            "modules": [
+                {
+                    "wallName": "N",
+                    "type": 1,
+                    "pos_x": -2.700000047683716,
+                    "pos_y": 0.0,
+                    "width": 0.800000011920929,
+                    "height": 2.0
+                },
+                {
+                    "wallName": "N",
+                    "type": 1,
+                    "pos_x": 0.0,
+                    "pos_y": 0.0,
+                    "width": 0.800000011920929,
+                    "height": 2.0
+                },
+                {
+                    "wallName": "W",
+                    "type": 2,
+                    "pos_x": -0.5,
+                    "pos_y": 0.6000000238418579,
+                    "width": 1.0,
+                    "height": 0.800000011920929
+                },
+                {
+                    "wallName": "W",
+                    "type": 2,
+                    "pos_x": 0.5,
+                    "pos_y": 0.6000000238418579,
+                    "width": 1.0,
+                    "height": 0.800000011920929
+                }
+            ]
+        },
+        {
+            "name": "Balkon",
+            "length": 1.75,
+            "width": 4.0,
+            "pos": {
+                "x": 5.099999904632568,
+                "y": 5.325000286102295
+            },
+            "relPlace": {
+                "refRoomName": "Wohnzimmer",
+                "direction": "NE",
+                "offset": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "activeWalls": [
+                true,
+                false,
+                true,
+                true,
+                true,
+                true
+            ],
+            "modules": [
+                {
+                    "wallName": "N",
+                    "type": 0,
+                    "pos_x": 0.0,
+                    "pos_y": 1.0,
+                    "width": 4.25,
+                    "height": 1.5
+                }
+            ]
+        },
+        {
+            "name": "Arbeitszimmer",
+            "length": 4.5,
+            "width": 2.200000047683716,
+            "pos": {
+                "x": 3.2750000953674318,
+                "y": 2.0749998092651369
+            },
+            "relPlace": {
+                "refRoomName": "Flur_p1",
+                "direction": "NW",
+                "offset": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "activeWalls": [
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+            ],
+            "modules": [
+                {
+                    "wallName": "S",
+                    "type": 1,
+                    "pos_x": 0.0,
+                    "pos_y": 0.0,
+                    "width": 0.800000011920929,
+                    "height": 2.0
+                },
+                {
+                    "wallName": "N",
+                    "type": 2,
+                    "pos_x": 0.0,
+                    "pos_y": 0.6000000238418579,
+                    "width": 1.0,
+                    "height": 1.0
+                }
+            ]
+        },
+        {
+            "name": "Kinderzimmer",
+            "length": 4.5,
+            "width": 2.25,
+            "pos": {
+                "x": 3.2750000953674318,
+                "y": -0.30000022053718569
+            },
+            "relPlace": {
+                "refRoomName": "Arbeitszimmer",
+                "direction": "ES",
+                "offset": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "activeWalls": [
+                true,
+                true,
+                false,
+                false,
+                true,
+                true
+            ],
+            "modules": [
+                {
+                    "wallName": "S",
+                    "type": 1,
+                    "pos_x": 0.0,
+                    "pos_y": 0.0,
+                    "width": 0.800000011920929,
+                    "height": 2.0
+                },
+                {
+                    "wallName": "N",
+                    "type": 2,
+                    "pos_x": 0.0,
+                    "pos_y": 0.6000000238418579,
+                    "width": 1.0,
+                    "height": 1.0
+                }
+            ]
+        },
+        {
+            "name": "Schlafzimmer",
+            "length": 4.5,
+            "width": 3.5,
+            "pos": {
+                "x": 3.2750000953674318,
+                "y": -3.325000286102295
+            },
+            "relPlace": {
+                "refRoomName": "Kinderzimmer",
+                "direction": "ES",
+                "offset": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "activeWalls": [
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+            ],
+            "modules": [
+                {
+                    "wallName": "S",
+                    "type": 1,
+                    "pos_x": 0.800000011920929,
+                    "pos_y": 0.0,
+                    "width": 0.800000011920929,
+                    "height": 2.0
+                },
+                {
+                    "wallName": "N",
+                    "type": 2,
+                    "pos_x": -0.6000000238418579,
+                    "pos_y": 0.6000000238418579,
+                    "width": 1.0,
+                    "height": 1.0
+                },
+                {
+                    "wallName": "N",
+                    "type": 2,
+                    "pos_x": 0.6000000238418579,
+                    "pos_y": 0.6000000238418579,
+                    "width": 1.0,
+                    "height": 1.0
+                }
+            ]
+        },
+        {
+            "name": "Bad",
+            "length": 2.75,
+            "width": 1.75,
+            "pos": {
+                "x": -0.49999991059303286,
+                "y": -4.200000286102295
+            },
+            "relPlace": {
+                "refRoomName": "Schlafzimmer",
+                "direction": "SE",
+                "offset": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "activeWalls": [
+                false,
+                false,
+                true,
+                true,
+                true,
+                true
+            ],
+            "modules": [
+                {
+                    "wallName": "W",
+                    "type": 1,
+                    "pos_x": 0.0,
+                    "pos_y": 0.0,
+                    "width": 0.800000011920929,
+                    "height": 2.0
+                }
+            ]
+        },
+        {
+            "name": "Kammer",
+            "length": 1.25,
+            "width": 1.75,
+            "pos": {
+                "x": -2.6500000953674318,
+                "y": -4.200000286102295
+            },
+            "relPlace": {
+                "refRoomName": "Bad",
+                "direction": "SE",
+                "offset": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "activeWalls": [
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+            ],
+            "modules": [
+                {
+                    "wallName": "W",
+                    "type": 1,
+                    "pos_x": 0.0,
+                    "pos_y": 0.0,
+                    "width": 0.800000011920929,
+                    "height": 2.0
+                }
+            ]
+        },
+        {
+            "name": "Flur_p2",
+            "length": 2.25,
+            "width": 2.200000047683716,
+            "pos": {
+                "x": -2.1500000953674318,
+                "y": -2.075000286102295
+            },
+            "relPlace": {
+                "refRoomName": "Kammer",
+                "direction": "WS",
+                "offset": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "activeWalls": [
+                false,
+                true,
+                false,
+                false,
+                true,
+                true
+            ],
+            "modules": [
+                {
+                    "wallName": "S",
+                    "type": 1,
+                    "pos_x": 0.0,
+                    "pos_y": 0.0,
+                    "width": 0.800000011920929,
+                    "height": 2.0
+                }
+            ]
+        },
+        {
+            "name": "Gaeste-WC",
+            "length": 2.25,
+            "width": 1.149999976158142,
+            "pos": {
+                "x": -2.1500000953674318,
+                "y": -0.2500002682209015
+            },
+            "relPlace": {
+                "refRoomName": "Flur_p2",
+                "direction": "WS",
+                "offset": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            "activeWalls": [
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+            ],
+            "modules": [
+                {
+                    "wallName": "N",
+                    "type": 1,
+                    "pos_x": 0.0,
+                    "pos_y": 0.0,
+                    "width": 0.800000011920929,
+                    "height": 2.0
+                }
+            ]
+        }
+    ]
+}

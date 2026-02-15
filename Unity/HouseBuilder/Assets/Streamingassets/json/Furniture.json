@@ -1,0 +1,16 @@
+{
+    "name": "Pax_1mx2m",
+    "height": 2.0199999809265138,
+    "width": 1.0,
+    "depth": 0.5799999833106995,
+    "thickFrame": 0.017999999225139619,
+    "thickBoard": 0.017999999225139619,
+    "rows": 5,
+    "cols": 1,
+    "footbarHeight": 0.07000000029802323,
+    "material": {
+        "instanceID": 23656
+    },
+    "enableMergeMeshes": false,
+    "create_doors": true
+}

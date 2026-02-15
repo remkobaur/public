@@ -1,0 +1,68 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2380359251139053716
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 901006574993635232}
+  - component: {fileID: 3333854931652081617}
+  m_Layer: 0
+  m_Name: _FurnitureCreator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &901006574993635232
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2380359251139053716}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.037, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3333854931652081617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2380359251139053716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ba2c8c787566434ca19e352f6e79779, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  jsonFile: Furniture.json
+  ButtonJsonImport: 0
+  ButtonJsonExport: 0
+  ButtonCreateShelf: 0
+  ButtonDestroyAllChildren: 0
+  enableMergeMeshes: 0
+  Template: 1
+  ButtonCreateExamples: 0
+  furniture:
+    name: Expedit_4x4
+    height: 1.5
+    width: 1.5
+    depth: 0.392
+    thickFrame: 0.05
+    thickBoard: 0.016
+    rows: 4
+    cols: 4
+    footbarHeight: 0
+    material: {fileID: 2100000, guid: f967aace450f5be4390ba65a4d854b51, type: 2}
+    enableMergeMeshes: 0
+    create_doors: 1
+  material: {fileID: 2100000, guid: f967aace450f5be4390ba65a4d854b51, type: 2}

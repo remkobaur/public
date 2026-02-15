@@ -1,0 +1,97 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4472295449458415431
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5961806773067881867}
+  - component: {fileID: 7555393524924923538}
+  m_Layer: 0
+  m_Name: FurnitureWallCreator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5961806773067881867
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4472295449458415431}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 5.7042117, y: 0.38601747, z: -0.19649976}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7555393524924923538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4472295449458415431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4952b97538d5de49ada2628d00dba5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ButtonCreateAllFurnitures: 0
+  ButtonDestroyAllChildren: 0
+  ButtonCreateExampleList: 0
+  enableMergeMeshes: 1
+  handleOffset: {x: 0.03, y: 0.07, z: 0.005}
+  furnitureList:
+  - name: CubBoard1
+    height: 0.7
+    width: 0.4
+    depth: 0.4
+    thickFrame: 0.015
+    thickBoard: 0.015
+    rows: 3
+    cols: 1
+    footbarHeight: 0
+    material: {fileID: 2100000, guid: f967aace450f5be4390ba65a4d854b51, type: 2}
+    enableMergeMeshes: 1
+    num_doors: 0
+    handleOffset: {x: 0.03, y: 0.07, z: 0.005}
+    doorType: 1
+  - name: CubBoard2
+    height: 0.7
+    width: 0.4
+    depth: 0.4
+    thickFrame: 0.015
+    thickBoard: 0.015
+    rows: 3
+    cols: 1
+    footbarHeight: 0
+    material: {fileID: 2100000, guid: f967aace450f5be4390ba65a4d854b51, type: 2}
+    enableMergeMeshes: 1
+    num_doors: 0
+    handleOffset: {x: 0.03, y: 0.07, z: 0.005}
+    doorType: 1
+  - name: CubBoard3
+    height: 0.7
+    width: 0.4
+    depth: 0.4
+    thickFrame: 0.015
+    thickBoard: 0.015
+    rows: 3
+    cols: 1
+    footbarHeight: 0
+    material: {fileID: 2100000, guid: f967aace450f5be4390ba65a4d854b51, type: 2}
+    enableMergeMeshes: 1
+    num_doors: 0
+    handleOffset: {x: 0.03, y: 0.07, z: 0.005}
+    doorType: 1
+  material: {fileID: 2100000, guid: f967aace450f5be4390ba65a4d854b51, type: 2}
+  handle: {fileID: 7776075645457879775, guid: 3038c4027c26fa54ab19faf0c873dcfd, type: 3}
+  front: {fileID: 6074095322152571888, guid: 54eb63755fdf31d4dad2e6140fa02135, type: 3}

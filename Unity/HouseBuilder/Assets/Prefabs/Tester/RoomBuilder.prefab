@@ -1,0 +1,302 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1517309731455746863
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5461290821329730615}
+  - component: {fileID: 9048823781409744239}
+  m_Layer: 0
+  m_Name: RoomBuilder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5461290821329730615
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1517309731455746863}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9048823781409744239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1517309731455746863}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f3862e683378a2459e87dfcada10a79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  jsonFile: MyAppartment.json
+  jsonPath: StreamingAssets/json
+  ButtonDoAllRooms: 0
+  ButtonCreateExamples: 0
+  ButtonDestroyAllChildren: 0
+  ToggleTag: 0
+  ButtonToggleTagActive: 0
+  ButtonJsonImport: 0
+  ButtonJsonExport: 0
+  floor:
+    name: Wohnung
+    height: 2.5
+    pos: {x: 0, y: 0, z: 0}
+    wallThickness: 0.15
+    materials:
+      wall: {fileID: 2100000, guid: b14fe7006966b8340a858c5b93325271, type: 2}
+      floor: {fileID: 2100000, guid: 5b1faaa697ef90947a5e090215135af5, type: 2}
+      door: {fileID: 2100000, guid: 0ae49d0710ee6614594073eeb7f791d0, type: 2}
+      window: {fileID: 2100000, guid: a4ca65fea0f5da24f9f91a614776a083, type: 2}
+    rooms:
+    - name: Flur_p1
+      length: 1.75
+      width: 6.35
+      pos: {x: 0, y: 0}
+      relPlace:
+        refRoomName: 
+        direction: N
+        offset: {x: 0, y: 0}
+      activeWalls: 000000000101
+      modules: []
+    - name: Wohnzimmer
+      length: 4.95
+      width: 4
+      pos: {x: 1.5999999, y: 5.3250003}
+      relPlace:
+        refRoomName: Flur_p1
+        direction: WS
+        offset: {x: 0, y: 0}
+      activeWalls: 010001010101
+      modules:
+      - wallName: N
+        type: 2
+        pos_x: -1.2
+        pos_y: 0.6
+        width: 1
+        height: 1
+      - wallName: N
+        type: 2
+        pos_x: 0.2
+        pos_y: 0.6
+        width: 1
+        height: 1
+      - wallName: N
+        type: 1
+        pos_x: 1.4
+        pos_y: 0
+        width: 0.8
+        height: 2
+      - wallName: E
+        type: 1
+        pos_x: -1.5
+        pos_y: 0
+        width: 0.8
+        height: 2
+    - name: "K\xFCche"
+      length: 2.25
+      width: 6.7
+      pos: {x: -2.15, y: 3.9750004}
+      relPlace:
+        refRoomName: Wohnzimmer
+        direction: SW
+        offset: {x: 0, y: 0}
+      activeWalls: 010101000101
+      modules:
+      - wallName: N
+        type: 1
+        pos_x: -2.7
+        pos_y: 0
+        width: 0.8
+        height: 2
+      - wallName: N
+        type: 1
+        pos_x: 0
+        pos_y: 0
+        width: 0.8
+        height: 2
+      - wallName: W
+        type: 2
+        pos_x: -0.5
+        pos_y: 0.6
+        width: 1
+        height: 0.8
+      - wallName: W
+        type: 2
+        pos_x: 0.5
+        pos_y: 0.6
+        width: 1
+        height: 0.8
+    - name: Balkon
+      length: 1.75
+      width: 4
+      pos: {x: 5.1, y: 5.3250003}
+      relPlace:
+        refRoomName: Wohnzimmer
+        direction: NE
+        offset: {x: 0, y: 0}
+      activeWalls: 010001010101
+      modules:
+      - wallName: N
+        type: 0
+        pos_x: 0
+        pos_y: 1
+        width: 4.25
+        height: 1.5
+    - name: Arbeitszimmer
+      length: 4.5
+      width: 2.2
+      pos: {x: 3.275, y: 2.0749998}
+      relPlace:
+        refRoomName: Flur_p1
+        direction: NW
+        offset: {x: 0, y: 0}
+      activeWalls: 010101010101
+      modules:
+      - wallName: S
+        type: 1
+        pos_x: 0
+        pos_y: 0
+        width: 0.8
+        height: 2
+      - wallName: N
+        type: 2
+        pos_x: 0
+        pos_y: 0.6
+        width: 1
+        height: 1
+    - name: Kinderzimmer
+      length: 4.5
+      width: 2.25
+      pos: {x: 3.275, y: -0.30000022}
+      relPlace:
+        refRoomName: Arbeitszimmer
+        direction: ES
+        offset: {x: 0, y: 0}
+      activeWalls: 010100000101
+      modules:
+      - wallName: S
+        type: 1
+        pos_x: 0
+        pos_y: 0
+        width: 0.8
+        height: 2
+      - wallName: N
+        type: 2
+        pos_x: 0
+        pos_y: 0.6
+        width: 1
+        height: 1
+    - name: Schlafzimmer
+      length: 4.5
+      width: 3.5
+      pos: {x: 3.275, y: -3.3250003}
+      relPlace:
+        refRoomName: Kinderzimmer
+        direction: ES
+        offset: {x: 0, y: 0}
+      activeWalls: 010101010101
+      modules:
+      - wallName: S
+        type: 1
+        pos_x: 0.8
+        pos_y: 0
+        width: 0.8
+        height: 2
+      - wallName: N
+        type: 2
+        pos_x: -0.6
+        pos_y: 0.6
+        width: 1
+        height: 1
+      - wallName: N
+        type: 2
+        pos_x: 0.6
+        pos_y: 0.6
+        width: 1
+        height: 1
+    - name: Bad
+      length: 2.75
+      width: 1.75
+      pos: {x: -0.4999999, y: -4.2000003}
+      relPlace:
+        refRoomName: Schlafzimmer
+        direction: SE
+        offset: {x: 0, y: 0}
+      activeWalls: 000001010101
+      modules:
+      - wallName: W
+        type: 1
+        pos_x: 0
+        pos_y: 0
+        width: 0.8
+        height: 2
+    - name: Kammer
+      length: 1.25
+      width: 1.75
+      pos: {x: -2.65, y: -4.2000003}
+      relPlace:
+        refRoomName: Bad
+        direction: SE
+        offset: {x: 0, y: 0}
+      activeWalls: 010101010101
+      modules:
+      - wallName: W
+        type: 1
+        pos_x: 0
+        pos_y: 0
+        width: 0.8
+        height: 2
+    - name: Flur_p2
+      length: 2.25
+      width: 2.2
+      pos: {x: -2.15, y: -2.0750003}
+      relPlace:
+        refRoomName: Kammer
+        direction: WS
+        offset: {x: 0, y: 0}
+      activeWalls: 000100000101
+      modules:
+      - wallName: S
+        type: 1
+        pos_x: 0
+        pos_y: 0
+        width: 0.8
+        height: 2
+    - name: Gaeste-WC
+      length: 2.25
+      width: 1.15
+      pos: {x: -2.15, y: -0.25000027}
+      relPlace:
+        refRoomName: Flur_p2
+        direction: WS
+        offset: {x: 0, y: 0}
+      activeWalls: 010101010101
+      modules:
+      - wallName: N
+        type: 1
+        pos_x: 0
+        pos_y: 0
+        width: 0.8
+        height: 2
+  materials:
+    wall: {fileID: 2100000, guid: b14fe7006966b8340a858c5b93325271, type: 2}
+    floor: {fileID: 2100000, guid: 5b1faaa697ef90947a5e090215135af5, type: 2}
+    door: {fileID: 2100000, guid: 0ae49d0710ee6614594073eeb7f791d0, type: 2}
+    window: {fileID: 2100000, guid: a4ca65fea0f5da24f9f91a614776a083, type: 2}
+  amountExampleRooms: 15
