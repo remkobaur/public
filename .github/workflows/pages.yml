@@ -31,7 +31,7 @@ jobs:
           rsync -av --exclude='.git' --exclude='_public' ./ _public/
           # make sure index.html is at the root of the published site
           # (optional) If you want / to show your site/index.html:
-          cp -f site/index.html _public/index.html
+          cp -f docs/index.html _public/index.html
 
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
