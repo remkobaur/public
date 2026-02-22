@@ -19,7 +19,7 @@
 ## Lego 
 |Description|Date|Image Final|Image Sketch|Details
 |-|-|-|-|-|
-| Snake Rod | 29.09.2023 | <img src="Toys/Lego/Snake Rod_Photo.jpg" alt="placeholder" width="200px" >| <img src="Toys/Lego/Snake Rod.png" alt="placeholder" width="120px" >|  |
+| Snake Rod | 29.09.2023 | <img src="Toys/Lego/Snake_Rod_Photo.jpg" alt="placeholder" width="200px" >| <img src="Toys/Lego/Snake_Rod.png" alt="placeholder" width="120px" >|  |
 | Ninjago Shield | 01.03.2022 | <img src="Toys/Lego/Schild_Photo.jpg" alt="placeholder" width="200px" >| <img src="Toys/Lego/Schild.png" alt="placeholder" width="200px" >|  |
 | Time Blade | 26.02.2022 | <img src="Toys/Lego/TimeBlade_Photo.jpg" alt="placeholder" width="200px" >| <img src="Toys/Lego/time_blade_body.png" alt="placeholder" width="200px" >|  |
 

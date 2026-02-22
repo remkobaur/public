@@ -243,6 +243,45 @@
       cursor: zoom-in;
     }
 
+    .image-lightbox {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      background: color-mix(in srgb, #000 75%, transparent);
+      z-index: 9999;
+    }
+
+    .image-lightbox.open {
+      display: flex;
+    }
+
+    .image-lightbox img {
+      max-width: min(96vw, 1700px);
+      max-height: 92vh;
+      width: auto;
+      height: auto;
+      border-radius: 10px;
+      border: 1px solid color-mix(in srgb, var(--border) 70%, #fff 30%);
+      box-shadow: 0 18px 40px color-mix(in srgb, #000 45%, transparent);
+      background: #111;
+    }
+
+    .image-lightbox-close {
+      position: absolute;
+      top: 0.8rem;
+      right: 0.9rem;
+      border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
+      background: color-mix(in srgb, var(--panel) 85%, transparent);
+      color: var(--text);
+      border-radius: 8px;
+      padding: 0.35rem 0.6rem;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
     .cp-details-list {
       margin: 0.35rem 0 0;
       padding-left: 1.1rem;
@@ -250,6 +289,16 @@
 
     .cp-details-list li {
       margin: 0.15rem 0;
+    }
+
+    .cp-date-inline {
+      display: block;
+      margin-top: 0.2rem;
+      margin-bottom: 0.1rem;
+      color: var(--muted);
+      font-size: 0.9em;
+      font-weight: 500;
+      white-space: nowrap;
     }
 
     .error {
@@ -289,6 +338,11 @@
     </main>
   </div>
 
+  <div class="image-lightbox" id="imageLightbox" aria-hidden="true">
+    <button class="image-lightbox-close" id="imageLightboxClose" type="button">Close</button>
+    <img id="imageLightboxImg" alt="Zoomed image" />
+  </div>
+
   <script id="md-Craft-Projects/3D_Print/Project_Overview.md" type="text/markdown"># 3D_Print 
 ## LINKS
 - [Main](../README.md)
@@ -310,7 +364,7 @@
 ## Lego 
 |Description|Date|Image Final|Image Sketch|Details
 |-|-|-|-|-|
-| Snake Rod | 29.09.2023 | <img src="Toys/Lego/Snake Rod_Photo.jpg" alt="placeholder" width="200px" >| <img src="Toys/Lego/Snake Rod.png" alt="placeholder" width="120px" >|  |
+| Snake Rod | 29.09.2023 | <img src="Toys/Lego/Snake_Rod_Photo.jpg" alt="placeholder" width="200px" >| <img src="Toys/Lego/Snake_Rod.png" alt="placeholder" width="120px" >|  |
 | Ninjago Shield | 01.03.2022 | <img src="Toys/Lego/Schild_Photo.jpg" alt="placeholder" width="200px" >| <img src="Toys/Lego/Schild.png" alt="placeholder" width="200px" >|  |
 | Time Blade | 26.02.2022 | <img src="Toys/Lego/TimeBlade_Photo.jpg" alt="placeholder" width="200px" >| <img src="Toys/Lego/time_blade_body.png" alt="placeholder" width="200px" >|  |
 
@@ -1085,7 +1139,7 @@ These components were used to model a flat. The project is still in progress; cu
       renderer.image = ({ href, title, text }) => {
         const src = `../${encodePath(resolvePath(currentDoc, href || ""))}`;
         const ttl = title ? ` title="${title}"` : "";
-        return `<a href="${src}" target="_blank" rel="noopener"${ttl}><img src="${src}" alt="${text || ""}" loading="lazy"${ttl} /></a>`;
+        return `<img src="${src}" alt="${text || ""}" loading="lazy"${ttl} />`;
       };
 
       return renderer;
@@ -1099,24 +1153,6 @@ These components were used to model a flat. The project is still in progress; cu
         const resolved = resolvePath(currentDoc, src);
         const finalSrc = `../${encodePath(resolved)}`;
         image.setAttribute("src", finalSrc);
-
-        const parentLink = image.closest("a");
-        if (parentLink) {
-          const currentHref = (parentLink.getAttribute("href") || "").trim();
-          if (!currentHref || !isExternalUrl(currentHref)) {
-            parentLink.setAttribute("href", finalSrc);
-            parentLink.setAttribute("target", "_blank");
-            parentLink.setAttribute("rel", "noopener");
-          }
-          continue;
-        }
-
-        const link = document.createElement("a");
-        link.setAttribute("href", finalSrc);
-        link.setAttribute("target", "_blank");
-        link.setAttribute("rel", "noopener");
-        image.replaceWith(link);
-        link.appendChild(image);
       }
 
       for (const anchor of rootElement.querySelectorAll("a[href]")) {
@@ -1130,6 +1166,46 @@ These components were used to model a flat. The project is still in progress; cu
       }
     }
 
+    function setupImageZoom(rootElement) {
+      const lightbox = document.getElementById("imageLightbox");
+      const lightboxImg = document.getElementById("imageLightboxImg");
+      const lightboxClose = document.getElementById("imageLightboxClose");
+      if (!lightbox || !lightboxImg || !lightboxClose) return;
+
+      const closeLightbox = () => {
+        lightbox.classList.remove("open");
+        lightbox.setAttribute("aria-hidden", "true");
+        lightboxImg.removeAttribute("src");
+        lightboxImg.removeAttribute("alt");
+      };
+
+      if (!lightbox.dataset.bound) {
+        lightbox.addEventListener("click", (event) => {
+          if (event.target === lightbox) closeLightbox();
+        });
+        lightboxClose.addEventListener("click", closeLightbox);
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape") closeLightbox();
+        });
+        lightbox.dataset.bound = "1";
+      }
+
+      for (const image of rootElement.querySelectorAll("img")) {
+        if (image.dataset.zoomBound) continue;
+        image.dataset.zoomBound = "1";
+        image.addEventListener("click", (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          const src = image.getAttribute("src") || "";
+          if (!src) return;
+          lightboxImg.setAttribute("src", src);
+          lightboxImg.setAttribute("alt", image.getAttribute("alt") || "Zoomed image");
+          lightbox.classList.add("open");
+          lightbox.setAttribute("aria-hidden", "false");
+        });
+      }
+    }
+
     function moveCraftProjectDetailsIntoDescription(rootElement, currentDoc) {
       if (!currentDoc.startsWith("Craft-Projects/")) return;
 
@@ -1139,8 +1215,9 @@ These components were used to model a flat. The project is still in progress; cu
 
         const headers = headerCells.map((cell) => (cell.textContent || "").trim().toLowerCase());
         const descIndex = headers.findIndex((name) => name === "description");
+        const dateIndex = headers.findIndex((name) => name === "date");
         const detailsIndex = headers.findIndex((name) => name === "details");
-        if (descIndex < 0 || detailsIndex < 0 || descIndex === detailsIndex) continue;
+        if (descIndex < 0 || dateIndex < 0 || descIndex === dateIndex) continue;
 
         table.style.tableLayout = "fixed";
         for (const row of table.querySelectorAll("tr")) {
@@ -1154,31 +1231,56 @@ These components were used to model a flat. The project is still in progress; cu
         const bodyRows = [...table.querySelectorAll("tbody tr")];
         for (const row of bodyRows) {
           const cells = [...row.querySelectorAll("td")];
-          if (cells.length <= Math.max(descIndex, detailsIndex)) continue;
+          if (cells.length <= Math.max(descIndex, dateIndex)) continue;
 
           const descCell = cells[descIndex];
-          const detailsCell = cells[detailsIndex];
-          const detailsHtml = (detailsCell.innerHTML || "").trim();
-          const detailsText = (detailsCell.textContent || "").replace(/ /g, " ").trim();
-          if (!detailsHtml || !detailsText) continue;
+          const dateCell = cells[dateIndex];
+          const dateText = (dateCell.textContent || "").replace(/ /g, " ").trim();
 
-          let list = descCell.querySelector("ul.cp-details-list");
-          if (!list) {
-            list = document.createElement("ul");
-            list.className = "cp-details-list";
-            descCell.appendChild(list);
+          if (dateText) {
+            const dateSpan = document.createElement("span");
+            dateSpan.className = "cp-date-inline";
+            dateSpan.textContent = `<${dateText}>`;
+
+            const detailsList = descCell.querySelector("ul.cp-details-list");
+            if (detailsList) {
+              detailsList.insertAdjacentElement("beforebegin", dateSpan);
+            } else {
+              descCell.appendChild(dateSpan);
+            }
           }
 
-          const item = document.createElement("li");
-          item.innerHTML = detailsHtml;
-          list.appendChild(item);
-          detailsCell.innerHTML = "";
+          if (detailsIndex >= 0 && cells.length > detailsIndex) {
+            const detailsCell = cells[detailsIndex];
+            const detailsHtml = (detailsCell.innerHTML || "").trim();
+            const detailsText = (detailsCell.textContent || "").replace(/ /g, " ").trim();
+            if (detailsHtml && detailsText) {
+              let list = descCell.querySelector("ul.cp-details-list");
+              if (!list) {
+                list = document.createElement("ul");
+                list.className = "cp-details-list";
+                descCell.appendChild(list);
+              }
+
+              const item = document.createElement("li");
+              item.innerHTML = detailsHtml;
+              list.appendChild(item);
+              detailsCell.innerHTML = "";
+            }
+          }
+          dateCell.innerHTML = "";
         }
 
+        const indexesToRemove = [dateIndex, detailsIndex]
+          .filter((index) => index >= 0)
+          .sort((a, b) => b - a);
+
         for (const row of table.querySelectorAll("tr")) {
-          const cells = [...row.children];
-          if (cells.length > detailsIndex) {
-            cells[detailsIndex].remove();
+          for (const index of indexesToRemove) {
+            const cells = [...row.children];
+            if (cells.length > index) {
+              cells[index].remove();
+            }
           }
         }
       }
@@ -1199,6 +1301,7 @@ These components were used to model a flat. The project is still in progress; cu
       content.innerHTML = marked.parse(markdown, { renderer });
       rewriteRenderedAssetLinks(content, docPath);
       moveCraftProjectDetailsIntoDescription(content, docPath);
+      setupImageZoom(content);
       setBreadcrumb(docPath);
       buildNav(docPath);
 
