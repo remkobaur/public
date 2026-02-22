@@ -60,7 +60,7 @@ def rewrite_markdown_html_tag_paths(markdown: str, current_doc: Path) -> str:
     except ValueError:
       return match.group(0)
 
-    return f"{attr}{quote}../{resolved}{hash_part}{quote}"
+    return f"{attr}{quote}{resolved}{hash_part}{quote}"
 
   return HTML_ATTR_URL_RE.sub(_replace, markdown)
 
@@ -466,7 +466,20 @@ __SCRIPTS__
 
   <script>
     const START_DOC = "README.md";
-    const ASSET_PREFIX = "../";
+    const ASSET_PREFIX = (() => {
+      if (location.protocol === "file:") {
+        return "../";
+      }
+
+      const docsMarker = "/docs/";
+      const lowerPath = location.pathname.toLowerCase();
+      const docsIndex = lowerPath.indexOf(docsMarker);
+      if (docsIndex >= 0) {
+        return location.pathname.slice(0, docsIndex + 1);
+      }
+
+      return "/";
+    })();
     const navList = document.getElementById("navList");
     const content = document.getElementById("content");
     const breadcrumbs = document.getElementById("breadcrumbs");
