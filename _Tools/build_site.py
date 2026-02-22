@@ -60,7 +60,7 @@ def rewrite_markdown_html_tag_paths(markdown: str, current_doc: Path) -> str:
     except ValueError:
       return match.group(0)
 
-    return f"{attr}{quote}{resolved}{hash_part}{quote}"
+    return f"{attr}{quote}../{resolved}{hash_part}{quote}"
 
   return HTML_ATTR_URL_RE.sub(_replace, markdown)
 
@@ -661,7 +661,7 @@ __SCRIPTS__
 
           const active = path === activeDoc ? "active" : "";
           const level = isRoot ? 1 : Math.max(1, path.split("/").length - 2);
-          const label = getDocLabel(path);
+          const label = isRoot ? prettyName(top) : getDocLabel(path);
           const itemized = isRoot ? "" : "itemized";
           items.push(`<li><a class="nav-link ${{itemized}} ${{active}}" style="--level: ${{level}}" href="#${{encodeURIComponent(path)}}">${{label}}</a></li>`);
         }
