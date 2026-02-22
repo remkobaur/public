@@ -7,8 +7,8 @@ from pathlib import Path
 
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
-OUTPUT_HTML = ROOT_DIR / "site" / "index.html"
-OUTPUT_README = ROOT_DIR / "site" / "README.md"
+OUTPUT_HTML = ROOT_DIR / "docs" / "index.html"
+OUTPUT_README = ROOT_DIR / "docs" / "README.md"
 START_DOC = Path("README.md")
 
 LINK_RE = re.compile(r"\[[^\]]*\]\(([^)]+\.md(?:#[^)]+)?)\)", re.IGNORECASE)
