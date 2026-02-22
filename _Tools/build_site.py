@@ -471,11 +471,14 @@ __SCRIPTS__
         return "../";
       }
 
-      const docsMarker = "/docs/";
-      const lowerPath = location.pathname.toLowerCase();
-      const docsIndex = lowerPath.indexOf(docsMarker);
-      if (docsIndex >= 0) {
-        return location.pathname.slice(0, docsIndex + 1);
+      const pathname = location.pathname || "/";
+      if (pathname.endsWith("/")) {
+        return pathname;
+      }
+
+      const lastSlash = pathname.lastIndexOf("/");
+      if (lastSlash >= 0) {
+        return pathname.slice(0, lastSlash + 1);
       }
 
       return "/";
