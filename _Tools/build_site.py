@@ -445,7 +445,7 @@ def build_html(docs: dict[str, str]) -> str:
   <div class="layout">
     <aside class="sidebar">
       <h1 class="brand">Public Repository</h1>
-      <p class="hint">Author: Remko Baur.<br>Status: Project list in progress.</p>
+      <p class="hint">Author: Remko Baur.<br>Status: Project list in progress.<br>Repository: <a href="https://github.com/remkobaur/Public" target="_blank" rel="noopener noreferrer">Public</a></p>
       <ul class="nav-list" id="navList"></ul>
     </aside>
 
