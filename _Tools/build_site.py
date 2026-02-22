@@ -12,6 +12,7 @@ OUTPUT_README = ROOT_DIR / "docs" / "README.md"
 START_DOC = Path("README.md")
 
 LINK_RE = re.compile(r"\[[^\]]*\]\(([^)]+\.md(?:#[^)]+)?)\)", re.IGNORECASE)
+HTML_ATTR_URL_RE = re.compile(r"(?P<attr>\b(?:src|href)\s*=\s*)(?P<quote>[\"'])(?P<url>[^\"']+)(?P=quote)", re.IGNORECASE)
 
 
 def normalize_path(path: str) -> str:
@@ -20,6 +21,48 @@ def normalize_path(path: str) -> str:
 
 def split_hash(target: str) -> str:
     return target.split("#", 1)[0]
+
+
+def is_external_url(url: str) -> bool:
+  return bool(re.match(r"^(?:[a-z]+:)?//|^(?:data:|mailto:|javascript:|#)", url.strip(), re.IGNORECASE))
+
+
+def resolve_repo_path(current_doc: Path, target: str) -> str:
+  cleaned = normalize_path(split_hash(target)).strip()
+  if not cleaned:
+    return normalize_path(str(current_doc))
+
+  root_candidate = ROOT_DIR / cleaned
+  if root_candidate.exists():
+    return normalize_path(cleaned)
+
+  resolved = (current_doc.parent / cleaned).resolve().relative_to(ROOT_DIR.resolve())
+  return normalize_path(str(resolved))
+
+
+def rewrite_markdown_html_tag_paths(markdown: str, current_doc: Path) -> str:
+  def _replace(match: re.Match[str]) -> str:
+    attr = match.group("attr")
+    quote = match.group("quote")
+    raw_url = match.group("url").strip()
+
+    if not raw_url or is_external_url(raw_url):
+      return match.group(0)
+
+    hash_part = ""
+    if "#" in raw_url:
+      base, hash_suffix = raw_url.split("#", 1)
+      raw_url = base
+      hash_part = f"#{hash_suffix}"
+
+    try:
+      resolved = resolve_repo_path(current_doc, raw_url)
+    except ValueError:
+      return match.group(0)
+
+    return f"{attr}{quote}{resolved}{hash_part}{quote}"
+
+  return HTML_ATTR_URL_RE.sub(_replace, markdown)
 
 
 def resolve_markdown_path(current_doc: Path, target: str) -> Path:
@@ -48,6 +91,7 @@ def discover_docs(start_doc: Path) -> dict[str, str]:
         markdown = full_path.read_text(encoding="utf-8", errors="replace")
         markdown = markdown.replace("\ufeff", "")
         markdown = markdown.replace("\ufffd", "—")
+        markdown = rewrite_markdown_html_tag_paths(markdown, doc)
         docs[doc_key] = markdown
 
         for match in LINK_RE.finditer(markdown):
@@ -422,6 +466,7 @@ __SCRIPTS__
 
   <script>
     const START_DOC = "README.md";
+    const ASSET_PREFIX = "../";
     const navList = document.getElementById("navList");
     const content = document.getElementById("content");
     const breadcrumbs = document.getElementById("breadcrumbs");
@@ -452,6 +497,12 @@ __SCRIPTS__
     function resolvePath(baseDoc, target) {
       const cleanedTarget = normalizePath(target.split("#")[0]);
       if (!cleanedTarget) return normalizePath(baseDoc);
+
+      const topSegment = cleanedTarget.split("/")[0];
+      if (repoTopLevel.has(topSegment)) {
+        return cleanedTarget;
+      }
+
       const baseDir = baseDoc.includes("/") ? baseDoc.slice(0, baseDoc.lastIndexOf("/") + 1) : "";
       const resolved = new URL(cleanedTarget, `https://local/${{baseDir}}`).pathname.slice(1);
       return normalizePath(resolved);
@@ -491,6 +542,11 @@ __SCRIPTS__
     }
 
     const docs = getEmbeddedDocs();
+    const repoTopLevel = new Set(
+      [...docs.keys()]
+        .map((path) => path.split("/")[0])
+        .filter(Boolean)
+    );
     const titles = new Map([...docs.entries()].map(([path, md]) => [path, extractTitle(md, path)]));
 
     function ensureReachableLinksInNav() {
@@ -639,18 +695,18 @@ __SCRIPTS__
           if (docs.has(resolved)) {
             return `<a href="#${{encodeURIComponent(targetDoc)}}">${{text}}</a>`;
           }
-          return `<a href="../${{encodePath(resolved)}}">${{text}}</a>`;
+          return `<a href="${{ASSET_PREFIX}}${{encodePath(resolved)}}" data-resolved="1">${{text}}</a>`;
         }
 
-        const assetHref = `../${{encodePath(resolvePath(currentDoc, rawHref))}}`;
+        const assetHref = `${{ASSET_PREFIX}}${{encodePath(resolvePath(currentDoc, rawHref))}}`;
         const ttl = title ? ` title="${{title}}"` : "";
-        return `<a href="${{assetHref}}"${{ttl}}>${{text}}</a>`;
+        return `<a href="${{assetHref}}" data-resolved="1"${{ttl}}>${{text}}</a>`;
       };
 
       renderer.image = ({ href, title, text }) => {
-        const src = `../${{encodePath(resolvePath(currentDoc, href || ""))}}`;
+        const src = `${{ASSET_PREFIX}}${{encodePath(resolvePath(currentDoc, href || ""))}}`;
         const ttl = title ? ` title="${{title}}"` : "";
-        return `<img src="${{src}}" alt="${{text || ""}}" loading="lazy"${{ttl}} />`;
+        return `<img src="${{src}}" data-resolved="1" alt="${{text || ""}}" loading="lazy"${{ttl}} />`;
       };
 
       return renderer;
@@ -658,22 +714,24 @@ __SCRIPTS__
 
     function rewriteRenderedAssetLinks(rootElement, currentDoc) {
       for (const image of rootElement.querySelectorAll("img[src]")) {
+        if (image.dataset.resolved === "1") continue;
         const src = (image.getAttribute("src") || "").trim();
         if (!src || isExternalUrl(src)) continue;
-        if (src.startsWith("../")) continue;
         const resolved = resolvePath(currentDoc, src);
-        const finalSrc = `../${{encodePath(resolved)}}`;
+        const finalSrc = `${{ASSET_PREFIX}}${{encodePath(resolved)}}`;
         image.setAttribute("src", finalSrc);
+        image.dataset.resolved = "1";
       }
 
       for (const anchor of rootElement.querySelectorAll("a[href]")) {
+        if (anchor.dataset.resolved === "1") continue;
         const href = (anchor.getAttribute("href") || "").trim();
         if (!href || isExternalUrl(href)) continue;
-        if (href.startsWith("../")) continue;
         if (href.startsWith("#")) continue;
         if (/\.md(?:#.*)?$/i.test(href)) continue;
         const resolved = resolvePath(currentDoc, href);
-        anchor.setAttribute("href", `../${{encodePath(resolved)}}`);
+        anchor.setAttribute("href", `${{ASSET_PREFIX}}${{encodePath(resolved)}}`);
+        anchor.dataset.resolved = "1";
       }
     }
 
