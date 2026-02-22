@@ -1,0 +1,41 @@
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Prepare publish directory
+        run: |
+          rm -rf _public
+          mkdir -p _public
+          # copy whole repo (but exclude .git and the publish dir itself)
+          rsync -av --exclude='.git' --exclude='_public' ./ _public/
+          # make sure index.html is at the root of the published site
+          # (optional) If you want / to show your site/index.html:
+          cp -f site/index.html _public/index.html
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _public
+      - id: deployment
+        uses: actions/deploy-pages@v4
