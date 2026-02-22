@@ -85,7 +85,7 @@ To build and upload this project, configure the Arduino IDE with these settings:
 
 Refer to the screenshot below for visual reference:
 
-![Arduino Settings - WifiTimer.png](docu/Arduino%20Settings%20-%20WifiTimer.png)
+![Arduino Settings - WifiTimer.png](docu/Arduino_Settings_WifiTimer.png)
 
 ---
 

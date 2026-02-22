@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Public Docs</title>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --accent: #60a5fa;
+      --accent-2: #22d3ee;
+      --border: #334155;
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #f8fafc;
+        --panel: #ffffff;
+        --panel-2: #f1f5f9;
+        --text: #0f172a;
+        --muted: #475569;
+        --accent: #2563eb;
+        --accent-2: #0891b2;
+        --border: #cbd5e1;
+      }
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, Segoe UI, Roboto, system-ui, -apple-system, sans-serif;
+      background: radial-gradient(circle at 20% 0%, color-mix(in srgb, var(--accent) 18%, transparent), transparent 45%), var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      border-right: 1px solid var(--border);
+      background: color-mix(in srgb, var(--panel) 92%, transparent);
+      backdrop-filter: blur(8px);
+      padding: 1rem;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: auto;
+    }
+
+    .brand {
+      margin: 0 0 0.25rem;
+      font-size: 1.15rem;
+      letter-spacing: 0.02em;
+    }
+
+    .hint {
+      margin: 0 0 1rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .nav-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .nav-link {
+      display: block;
+      text-decoration: none;
+      color: var(--text);
+      border: 1px solid var(--border);
+      background: var(--panel-2);
+      border-radius: 10px;
+      padding: 0.55rem 0.65rem;
+      padding-left: calc(0.65rem + var(--level, 0) * 0.8rem);
+      transition: 120ms ease;
+      font-size: 0.95rem;
+      overflow-wrap: anywhere;
+    }
+
+    .nav-separator {
+      height: 1px;
+      border: 0;
+      background: color-mix(in srgb, var(--border) 80%, transparent);
+      margin: 0.6rem 0.15rem 0.45rem;
+    }
+
+    .nav-double-separator {
+      border: 0;
+      border-top: 3px double color-mix(in srgb, var(--border) 85%, transparent);
+      margin: 0.55rem 0.15rem 0.5rem;
+    }
+
+    .nav-link:hover {
+      border-color: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    .nav-link.active {
+      background: color-mix(in srgb, var(--accent) 18%, var(--panel-2));
+      border-color: var(--accent);
+      font-weight: 600;
+    }
+
+    .nav-link.nav-home {
+      background: color-mix(in srgb, var(--accent-2) 20%, var(--panel-2));
+      border-color: color-mix(in srgb, var(--accent-2) 60%, var(--border));
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .nav-link.nav-home:hover {
+      border-color: var(--accent-2);
+      background: color-mix(in srgb, var(--accent-2) 28%, var(--panel-2));
+    }
+
+    .nav-link.nav-home.active {
+      border-color: var(--accent-2);
+      background: color-mix(in srgb, var(--accent-2) 34%, var(--panel-2));
+      box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent-2) 45%, transparent) inset;
+    }
+
+    .nav-link.itemized {
+      border: none;
+      background: transparent;
+      border-radius: 0;
+      padding-top: 0.35rem;
+      padding-bottom: 0.35rem;
+      position: relative;
+      color: color-mix(in srgb, var(--text) 88%, var(--muted));
+    }
+
+    .nav-link.itemized::before {
+      content: "•";
+      position: absolute;
+      left: calc(0.25rem + var(--level, 1) * 0.8rem - 0.55rem);
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .nav-link.itemized:hover {
+      border: none;
+      transform: none;
+      color: var(--accent);
+      background: color-mix(in srgb, var(--accent) 10%, transparent);
+      border-radius: 8px;
+    }
+
+    .nav-link.itemized.active {
+      border: none;
+      background: color-mix(in srgb, var(--accent) 14%, transparent);
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    main {
+      padding: 1.5rem;
+      min-width: 0;
+    }
+
+    .content-shell {
+      width: min(1150px, 100%);
+      margin: 0 auto;
+      border: 1px solid var(--border);
+      background: color-mix(in srgb, var(--panel) 95%, transparent);
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 20px 45px color-mix(in srgb, var(--accent) 12%, transparent);
+    }
+
+    .breadcrumbs {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+      overflow-wrap: anywhere;
+    }
+
+    .md-content h1, .md-content h2, .md-content h3 {
+      line-height: 1.2;
+      margin-top: 1.35em;
+      margin-bottom: 0.5em;
+    }
+
+    .md-content h1 { font-size: 1.9rem; }
+    .md-content h2 { font-size: 1.45rem; }
+
+    .md-content p, .md-content li { line-height: 1.6; }
+
+    .md-content a {
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px dashed color-mix(in srgb, var(--accent) 55%, transparent);
+    }
+
+    .md-content a:hover {
+      color: var(--accent-2);
+      border-bottom-color: var(--accent-2);
+    }
+
+    .md-content table {
+      border-collapse: collapse;
+      width: 100%;
+      display: block;
+      overflow-x: auto;
+      margin: 1rem 0;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+
+    .md-content th,
+    .md-content td {
+      border: 1px solid var(--border);
+      padding: 0.5rem;
+      text-align: left;
+      vertical-align: top;
+      min-width: 110px;
+    }
+
+    .md-content img {
+      max-width: min(100%, 320px);
+      height: auto;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--panel-2);
+      cursor: zoom-in;
+    }
+
+    .cp-details-list {
+      margin: 0.35rem 0 0;
+      padding-left: 1.1rem;
+    }
+
+    .cp-details-list li {
+      margin: 0.15rem 0;
+    }
+
+    .error {
+      color: #fca5a5;
+      border: 1px solid #dc2626;
+      background: color-mix(in srgb, #dc2626 15%, transparent);
+      border-radius: 10px;
+      padding: 0.8rem;
+      margin-top: 0.8rem;
+    }
+
+    @media (max-width: 960px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar {
+        position: static;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+      main { padding: 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <h1 class="brand">Public Repository</h1>
+      <p class="hint">Standalone Markdown website</p>
+      <ul class="nav-list" id="navList"></ul>
+    </aside>
+
+    <main>
+      <section class="content-shell">
+        <div class="breadcrumbs" id="breadcrumbs"></div>
+        <article class="md-content" id="content">Loading...</article>
+      </section>
+    </main>
+  </div>
+
+  <script id="md-Craft-Projects/3D_Print/Project_Overview.md" type="text/markdown"># 3D_Print 
+## LINKS
+- [Main](../README.md)
+
+## Projects 
+|Description|Date|Image Final|Image Sketch|Details
+|-|-|-|-|-|
+| Wing holder toy dragon  | 05.07.2025 | <img src="Toys/WingHolder_Photo.jpg" alt="placeholder" width="200px" >| <img src="Toys/WingHolder_Sketch.png" alt="placeholder" width="150px" >|  |
+|  Desktop  | 18.02.2024 | <img src="Furniture/Desktop_Unity.png" alt="placeholder" width="200px" >| <img src="Furniture/Desk.png" alt="placeholder" width="200px" >|  |
+
+## Photogrammetry 
+|Description|Date|Image Final|Image Sketch|Details
+|-|-|-|-|-|
+| Photogrammetry Swing (AT Mega) | 08.02.2022 | <img src="Photogrammetry/Photogrammetry_Swing.jpg" alt="placeholder" width="200px" >| |  |
+| 3D Scan of an apple | 08.02.2022 | <img src="Photogrammetry/3DScan_apple.jpg" alt="placeholder" width="200px" >| |  |
+| Otter | 01.07.2020 | <img src="Photogrammetry/Otter.jpg" alt="placeholder" width="200px" >| <img src="Photogrammetry/Otter_Mesh.png" alt="placeholder" width="200px" >|  |
+| Elephant | 01.01.2020 | <img src="Photogrammetry/Elephant_3Dprint.jpg" alt="placeholder" width="200px" >| <img src="Photogrammetry/Elephant_singlePhoto.jpg" alt="placeholder" width="200px" >|  |
+
+## Lego 
+|Description|Date|Image Final|Image Sketch|Details
+|-|-|-|-|-|
+| Snake Rod | 29.09.2023 | <img src="Toys/Lego/Snake Rod_Photo.jpg" alt="placeholder" width="200px" >| <img src="Toys/Lego/Snake Rod.png" alt="placeholder" width="120px" >|  |
+| Ninjago Shield | 01.03.2022 | <img src="Toys/Lego/Schild_Photo.jpg" alt="placeholder" width="200px" >| <img src="Toys/Lego/Schild.png" alt="placeholder" width="200px" >|  |
+| Time Blade | 26.02.2022 | <img src="Toys/Lego/TimeBlade_Photo.jpg" alt="placeholder" width="200px" >| <img src="Toys/Lego/time_blade_body.png" alt="placeholder" width="200px" >|  |
+
+## RoomBuilder (Unity) 
+|Description|Date|Image Final|Image Sketch|Details
+|-|-|-|-|-|
+| Flat top view | 01.07.2024 | <img src="3D_Simulation/RoomBuilder_TopView.png" alt="placeholder" width="200px" >| |  |
+| Office with inventory Spawner | 01.07.2024 | <img src="3D_Simulation/RoomBuilder_Office.png" alt="placeholder" width="200px" >| |  |
+| Living Room | 01.07.2024 | <img src="3D_Simulation/RoomBuilder_LivingRoom.png" alt="placeholder" width="200px" >| |  |
+| Kitchen | 01.07.2024 | <img src="3D_Simulation/RoomBuilder_Kitchen.png" alt="placeholder" width="200px" >| |  |
+
+## Tools 
+|Description|Date|Image Final|Image Sketch|Details
+|-|-|-|-|-|
+| Sharpener Jig for chisels | 25.01.2026 | <img src="Tools/SharpenerJig.jpg" alt="placeholder" width="200px" >| <img src="Tools/SharpenerJig_sketch.jpg" alt="placeholder" width="200px" >|  |
+
+</script>
+
+  <script id="md-Craft-Projects/Electronics/Project_Overview.md" type="text/markdown"># Electronics 
+## LINKS
+- [Main](../README.md)
+
+## Projects 
+|Description|Date|Image Final|Image Sketch|Details
+|-|-|-|-|-|
+|  Servo Walker | 05.01.2026 | <img src="Toys/ServoWalker_closed.jpg" alt="placeholder" width="300px" >| <img src="Toys/ServoWalker_opened.jpg" alt="placeholder" width="300px" >|  |
+|  Sleep Light | 04.07.2025 | <img src="Lamps/SleepLight_1.jpg" alt="placeholder" width="200px" >| <img src="Lamps/SleepLight_2.jpg" alt="placeholder" width="170px" >|  |
+|  Soundbox (Raspberry Pi & RFID) | 04.07.2016 | <img src="Toys/SoundBox_1.jpg" alt="placeholder" width="200px" >| <img src="Toys/SoundBox_2.jpg" alt="placeholder" width="200px" >| A soundbox inspired by the "Tony Box" — each cover sheet is identified by an RFID tag and triggers six distinct sounds. |
+
+## Pinouts 
+|Description|Date|Image Final|Image Sketch|Details
+|-|-|-|-|-|
+|  USB Cable Colors | 01.07.2025 | <img src="PinOuts/USB_Cable_Colors.png" alt="placeholder" width="200px" >| |  |
+| ESP8266 | 01.01.2020 | <img src="PinOuts/ESP8266 Serial Port Wifi Modul ESP FT232 Entwicklungsboard Nodemcu Lua V3 Core B.png" alt="placeholder" width="200px" >| |  |
+|  Jack pin out variants  | 12.09.2018 | <img src="PinOuts/Jack_Pinouts.png" alt="placeholder" width="200px" >| |  |
+|  Jack 4 Pole | 12.09.2018 | <img src="PinOuts/Jack_4pole_Pinouts.png" alt="placeholder" width="200px" >| |  |
+|  USB plugs and sockets | 12.09.2018 | <img src="PinOuts/USB_Pinouts.png" alt="placeholder" width="200px" >| |  |
+|  Resistor ColorCodes | 11.09.2018 | <img src="PinOuts/Resistor-ColorCodes.png" alt="placeholder" width="200px" >| |  |
+| Raspberrypi2B | 01.01.2016 | <img src="PinOuts/pinout-Raspberrypi2B.png" alt="placeholder" width="200px" >| |  |
+
+## Test Bench 
+|Description|Date|Image Final|Image Sketch|Details
+|-|-|-|-|-|
+| Common Rail Test Bench (PHD) | 10.12.2012 | <img src="TestBench/PST-Foto.png" alt="placeholder" width="200px" >| | angular synchronous controller for high pressure pump and injectors |
+| Active Lowpass | 22.07.2010 | <img src="TestBench/Filter_Foto.JPG" alt="placeholder" width="200px" >| <img src="TestBench/FZG-Ch1.jpg" alt="placeholder" width="200px" >| Active 4th-order Butterworth low-pass filter for suppressing 50 Hz oscillations in the analog RPM signal caused by the power supply. |
+
+</script>
+
+  <script id="md-Craft-Projects/README.md" type="text/markdown"># Craft-Projects 
+
+This overview only includes newer crafting projects, as I have not yet documented the older ones.
+
+## LINKS
+- [Wood_Working](./Wood_Working/Project_Overview.md)
+- [3D_Print](./3D_Print/Project_Overview.md)
+- [Electronics](./Electronics/Project_Overview.md)
+
+## Best of my Projects
+|Description|Date|Image Final|Image Sketch|Details
+|-|-|-|-|-|
+|  Frame Groot  | 01.02.2026 | <img src="Wood_Working/Deco/Frame_Groot.jpg" alt="placeholder" width="250">| |  |
+| Sharpener Jig for chisels | 25.01.2026 | <img src="3D_Print/Tools/SharpenerJig.jpg" alt="placeholder" width="250">| <img src="3D_Print/Tools/SharpenerJig_sketch.jpg" alt="placeholder" width="250">|  |
+|  Servo Walker | 05.01.2026 | <img src="Electronics/Toys/ServoWalker_closed.jpg" alt="placeholder" width="250">| <img src="Electronics/Toys/ServoWalker_opened.jpg" alt="placeholder" width="250">|  |
+| Upholstery Chair | 25.10.2025 | <img src="Wood_Working/Furniture/Upholstery/Upholstery_Chair.png" alt="placeholder" width="250">| <img src="Wood_Working/Furniture/Upholstery/Upholstery_Chair_Skretch.png" alt="placeholder" width="250">|  |
+|  Lamp  | 02.03.2025 | <img src="Wood_Working/Furniture/Lamp.jpg" alt="placeholder" width="250">| <img src="Wood_Working/Furniture/Lamp_UpsideDown.jpg" alt="placeholder" width="250">|  |
+|  Sliding Door  | 17.09.2022 | <img src="Wood_Working/Furniture/SlidingDoor.jpg" alt="placeholder" width="250">| <img src="Wood_Working/Furniture/SlidingDoor_Sketch.png" alt="placeholder" width="250">|  |
+| Photogrammetry Swing (AT Mega) | 08.02.2022 | <img src="3D_Print/Photogrammetry/Photogrammetry_Swing.jpg" alt="placeholder" width="250">| |  |
+| 3D Scan of an apple | 08.02.2022 | <img src="3D_Print/Photogrammetry/3DScan_apple.jpg" alt="placeholder" width="250">| |  |
+|  WorkBench  | 05.10.2020 | <img src="Wood_Working/WorkBench/WorkBench_Photo2.jpg" alt="placeholder" width="250">| <img src="Wood_Working/WorkBench/WorkBench_Sketch_Meassures.png" alt="placeholder" width="250">|  |
+| Elephant | 01.01.2020 | <img src="3D_Print/Photogrammetry/Elephant_3Dprint.jpg" alt="placeholder" width="250">| <img src="3D_Print/Photogrammetry/Elephant_singlePhoto.jpg" alt="placeholder" width="250">|  |
+|  Tooth brush stand  | 01.01.2018 | <img src="Wood_Working/Furniture/ToothBrushStand.jpg" alt="placeholder" width="250">| <img src="Wood_Working/Furniture/ToothBrushStand_Sketch.png" alt="placeholder" width="250">|  |
+|  Soundbox (Raspberry Pi & RFID) | 04.07.2016 | <img src="Electronics/Toys/SoundBox_1.jpg" alt="placeholder" width="250">| <img src="Electronics/Toys/SoundBox_2.jpg" alt="placeholder" width="250">| A soundbox inspired by the "Tony Box" — each cover sheet is identified by an RFID tag and triggers six distinct sounds. |
+| Common Rail Test Bench (PHD) | 10.12.2012 | <img src="Electronics/TestBench/PST-Foto.png" alt="placeholder" width="250">| | angular synchronous controller for high pressure pump and injectors |
+
+</script>
+
+  <script id="md-Craft-Projects/Wood_Working/Project_Overview.md" type="text/markdown"># Wood_Working 
+## LINKS
+- [Main](../README.md)
+
+## Upholstery 
+|Description|Date|Image Final|Image Sketch|Details
+|-|-|-|-|-|
+| Upholstery Bed | 25.10.2025 | <img src="Furniture/Upholstery/Upholstery_Bed.png" alt="placeholder" width="200px" >| <img src="Furniture/Upholstery/Upholstery_Bed_Skretch.png" alt="placeholder" width="200px" >|  |
+| Upholstery Bench | 25.10.2025 | <img src="Furniture/Upholstery/Upholstery_Bench.png" alt="placeholder" width="200px" >| <img src="Furniture/Upholstery/Upholstery_Bench_Skretch.png" alt="placeholder" width="200px" >|  |
+| Upholstery Chair | 25.10.2025 | <img src="Furniture/Upholstery/Upholstery_Chair.png" alt="placeholder" width="200px" >| <img src="Furniture/Upholstery/Upholstery_Chair_Skretch.png" alt="placeholder" width="200px" >|  |
+
+## Projects 
+|Description|Date|Image Final|Image Sketch|Details
+|-|-|-|-|-|
+|  Frame Groot  | 01.02.2026 | <img src="Deco/Frame_Groot.jpg" alt="placeholder" width="200px" >| |  |
+|  Gnocci Maker  | 05.06.2025 | <img src="Tools/GnocciMaker.jpg" alt="placeholder" width="200px" >| |  |
+|  PlantTable  | 23.05.2025 | <img src="Furniture/PlantTable.jpg" alt="placeholder" width="200px" >| <img src="Furniture/PlantTable_Sketch.png" alt="placeholder" width="200px" >|  |
+|  Lamp  | 02.03.2025 | <img src="Furniture/Lamp.jpg" alt="placeholder" width="200px" >| <img src="Furniture/Lamp_UpsideDown.jpg" alt="placeholder" width="200px" >|  |
+|  Shelf  | 01.03.2025 | <img src="Furniture/Shelf.jpg" alt="placeholder" width="200px" >| <img src="Furniture/Shelf_Sketch.png" alt="placeholder" width="200px" >|  |
+|  Frame Stich  | 01.02.2025 | <img src="Deco/Frame_Stitch.jpg" alt="placeholder" width="200px" >| |  |
+|  Gravitrax Stand  | 01.02.2025 | <img src="Toys/Gravitrax_Stand.jpg" alt="placeholder" width="200px" >| <img src="Toys/Gravitrax_Stand_Sketch.png" alt="placeholder" width="200px" >|  |
+|  Piano Foot  | 01.08.2024 | <img src="Furniture/PianoFoot.jpg" alt="placeholder" width="170px" >| <img src="Furniture/PianoFoot_Sketch.png" alt="placeholder" width="200px" >|  |
+| Dust Extraction Multi Blast Gate | 21.12.2022 | <img src="WorkBench/Multi_BlastGate_Wood_Photo.jpg" alt="placeholder" width="200px" >| <img src="WorkBench/Multi_BlastGate_Wood.png" alt="placeholder" width="200px" >|  |
+|  Sliding Door  | 17.09.2022 | <img src="Furniture/SlidingDoor.jpg" alt="placeholder" width="170px" >| <img src="Furniture/SlidingDoor_Sketch.png" alt="placeholder" width="200px" >|  |
+|  Dragon Sattle  | 01.01.2021 | <img src="Toys/Drachensattel_1.jpg" alt="placeholder" width="200px" >| <img src="Toys/Drachensattel_2.jpg" alt="placeholder" width="200px" >|  |
+| Screen Socket | 01.01.2021 | <img src="Furniture/ScreenSocket/ScreenSocket_Final.jpg" alt="placeholder" width="200px" >| <img src="Furniture/ScreenSocket/ScreenSocket_TopBottom.jpg" alt="placeholder" width="200px" >|  |
+|  WorkBench  | 05.10.2020 | <img src="WorkBench/WorkBench_Photo2.jpg" alt="placeholder" width="200px" >| <img src="WorkBench/WorkBench_Sketch_Meassures.png" alt="placeholder" width="200px" >|  |
+|  WorkBench (sketch)  | 05.10.2020 | | <img src="WorkBench/WorkBench_Sketch_Pretty.png" alt="placeholder" width="200px" >|  |
+| Wodden Car | 01.01.2019 | <img src="Toys/Wood_Car.jpg" alt="placeholder" width="200px" >| |  |
+|  Schiebestock  | 13.09.2018 | <img src="Tools/Schiebestock.jpg" alt="placeholder" width="200px" >| |  |
+|  Tooth brush stand  | 01.01.2018 | <img src="Furniture/ToothBrushStand.jpg" alt="placeholder" width="200px" >| <img src="Furniture/ToothBrushStand_Sketch.png" alt="placeholder" width="200px" >|  |
+|  Tea Shelf  | 01.01.2013 | <img src="Furniture/TeaShelf.jpg" alt="placeholder" width="200px" >| |  |
+
+</script>
+
+  <script id="md-MicroControllers/NodeMCU/TimerBased_PowerSupply/Documentation.md" type="text/markdown"># WifiTimer: Timer-Based Power Supply with Web Server Configuration
+
+## Project Summary
+
+WifiTimer is a smart timer-based water pump controller built on the ESP8266 (NodeMCU). It combines automatic scheduling, manual control, and safety monitoring via a responsive web interface. The system can operate up to three independent timer schedules, with real-time adjustments stored persistently in EEPROM.
+
+**Key capabilities:**
+- **Scheduling**: Configure up to 3 independent timer events with custom start times and durations
+- **Manual control**: Override via physical button or web UI on-off switches
+- **Safety**: Automatic shutdown if water level drops; LED alerts for critical conditions
+- **Monitoring**: Activity logging with timestamps; soil moisture sensing (optional)
+- **Connectivity**: NTP-synchronized real-time clock; responsive web interface for remote configuration
+- **Storage**: EEPROM-backed configuration—settings persist through power loss
+
+**Architecture:**
+The code is modular and organized into focused library headers: IO control, timer/scheduling, web UI, and persistent configuration storage.
+
+---
+
+## Configuration via Web Server
+
+The web interface allows complete remote control and configuration:
+
+- **Timer configuration**: Define up to three timer events with custom start times (HH:MM) and durations (minutes)
+- **Manual timer**: Trigger a one-time run for a specified duration using the `t_manual` parameter
+- **On/Off controls**: Virtual buttons in the web UI to instantly toggle the pump, independent of timers
+- **Persistent storage**: Click the `update` button to save all settings to EEPROM; configuration survives power cycles
+- **Activity log**: View the last 5 pump events (on/off/auto/manual) with timestamps
+
+![HTML_Configurator.png](docu/HTML_Configurator.png)
+
+---
+
+## Hardware
+
+![hardware_setup.drawio.png](docu/hardware_setup.drawio.png)
+
+|Item|Type|Details
+|-|-|-|
+|NodeMCU | ESP-12E | [ESP8266 NodeMCU development board](https://de.wikipedia.org/wiki/NodeMCU) |
+|Relais | SRD-05VDS-SL-C | [TRU COMPONENTS TC-9072472](https://www.conrad.de/de/p/tru-components-tc-9072472-relais-platine-1-st-passend-fuer-entwicklungskits-arduino-2268118.html?experience=b2c&hk=SEM&utm_source=google&utm_medium=cpc&utm_campaign=DE+-+PMAX+-+NonBrand+-+High&utm_id=22797105046&gad_source=1&gad_campaignid=22787577324&gbraid=0AAAAAD1-3H5OOKfC-F5dfbRnKc5PRWTL1&gclid=Cj0KCQiAhaHMBhD2ARIsAPAU_D79X5FOwd9OvRX2RuEP73A7cDPEYU_o6M82Y9xMd1_E_FBTGFRTCh4aAs1wEALw_wcB)  |
+|Balcony Watering | Gardena Typ: 1407 | [230V Power supply for watering system](docu/Gardena.jpg)|
+|AC/DC Converter | - | 230V ->5V 1A |
+|Extension cable 230V| - | 3m; cut in the middle and connected to the relais|
+|Moisture sensor | [Flying-Fish MH-Sensor](https://einstronic.com/product/soil-moisture-level-sensor-module/) | Optional, not yet integrated
+
+### NodeMCU Pin Assignment
+
+| Component | GPIO Pin | Notes |
+|-|-|-|
+| AC/DC Power | 5V, GND | Powers the NodeMCU board |
+| Water level switch | D5, GND | Float switch with pull-up; LOW = water OK |
+| Status LED | D4, GND | Active HIGH; includes current-limiting resistor |
+| Relay module | D0, D1 | Controls pump; active LOW (inverted logic) |
+| Moisture sensor | A0, 5V, GND | Analog input; not yet integrated |
+
+---
+
+## Structogram
+
+The main program loop handles scheduling evaluation, manual button input, automatic timer control, and web server requests:
+
+- **Source diagram** (editable): [structogram_WifiTimer.drawio](docu/structogram_WifiTimer.drawio) — Open in [draw.io](https://draw.io) to view or edit the control flow
+- **Static view** (PNG): ![structogram_WifiTimer.drawio.png](docu/structogram_WifiTimer.drawio.png)
+
+---
+
+## File Organization
+
+The diagram below shows the dependency relationships and key capabilities of each library header:
+
+- **Source diagram** (editable): [file_dependencies.drawio](docu/file_dependencies.drawio) — Open in [draw.io](https://draw.io) to inspect or modify the architecture
+- **Static view** (PNG): ![file_dependencies.drawio.png](docu/file_dependencies.drawio.png)
+
+---
+
+## Arduino IDE Setup
+
+To build and upload this project, configure the Arduino IDE with these settings:
+
+- **Board**: Tools → Board → esp8266 → NodeMCU 1.0 (ESP-12E Module)
+- **CPU Frequency**: 80 MHz (default)
+- **Upload Speed**: 115200 baud
+- **Port**: Select your COM port
+
+Refer to the screenshot below for visual reference:
+
+![Arduino Settings - WifiTimer.png](docu/Arduino_Settings_WifiTimer.png)
+
+---
+
+## Header Files Reference
+
+Each library header encapsulates a specific functional domain:
+### myLib_IOs.h — Hardware I/O Control
+
+Core functions for managing relays, sensors, and status indicators:
+
+- **Relay control**: `Switch_on()`, `Switch_off()`, `Switch_is_on()` — manage the two relay outputs (active LOW)
+- **Water level detection**: `isLevelOk()` — reads the float level switch and triggers automatic shutdown if water is low; blinks LED as warning
+- **Soil moisture reading**: `is_soil_dry()` — acquires analog sensor value from A0 and computes percentage in `soilMoisturePercent` (not yet integrated into main logic)
+- **Button input**: `isButtonPressed()` — debounced digital read of the external push-button with blocking debounce loop
+- **Initialization**: `init_IOs()` — configures all GPIO pins, performs initial sensor reads, and sets safe defaults (relays off, LED off)
+
+### myLib_Timer.h — Scheduling & Time Management
+
+Time synchronization, schedule evaluation, and timer control:
+
+- **NTP synchronization**: `time_synch()` — syncs system clock with `pool.ntp.org` at boot using the configured timezone
+- **Time access**: `get_time()`, `get_time_mm()`, `print_time()` — retrieve current time as UNIX struct or minute-of-day integer
+- **Schedule checking**: `check_time()` — evaluates whether the current time falls within any of the three configured timer windows
+- **Timer engine**: `my_Timer()` — starts manual (duration-based) or automatic (schedule-based) timers and tracks expiration
+- **Activity log**: `Log_write()` — circular FIFO log buffer (5 entries max) recording ON/OFF transitions with UTC timestamps
+- **Helpers**: `set_start_min()`, `update_start_min()` — utility functions for timer schedule conversion and management
+
+### myLib_Webserver.h — HTTP Server & Web UI
+
+Builds and serves a responsive HTML interface for remote configuration and monitoring:
+
+- **Form builders**: `create_NumberInput()`, `create_Button()`, `create_NumDropDown()` — generate reusable HTML input components with inline styling
+- **Page generation**: `getPage()` — assembles the complete HTML document (headers, CSS, form controls, status displays, activity log) and returns as a single string
+- **Request handlers**: `handleRoot()`, `handleB1()` — process incoming POST requests (timer updates, on/off commands, manual timer triggers)
+- **Utilities**: `server_getInt()` — safely extract and convert integer parameters from HTTP request arguments
+- **Initialization**: `init_WiFi()`, `exec_WebServer()` — establish WiFi connection and poll for incoming HTTP requests
+
+### myLib_PersistentVars.h — Configuration Storage
+
+Manages timer schedules and settings in persistent storage:
+
+- **Configuration structure**: `cfg` — holds all user settings: three timer schedules (start hour, minute, duration per timer) and the manual timer duration
+- **Persistence layer**: `saveConfig()`, `loadConfig()` — write configuration to and read from EEPROM
+- **Reset function**: `eraseConfig()` — optional factory reset (clears all timers)
+
+### MyWifiSettings.h — WiFi Credentials
+
+User configuration file for network access:
+
+- **Network credentials**: `ssid`, `password` — enter your WiFi network name and password here
+
+---
+
+## Quick Start Guide
+
+1. **Update WiFi settings**: Edit `MyWifiSettings.h` and enter your network credentials
+2. **Select board**: Arduino IDE → Tools → Board → NodeMCU 1.0 (ESP-12E Module)
+3. **Upload**: Connect your NodeMCU via USB and click Upload
+4. **Find the device**: After boot, the NodeMCU connects to your WiFi and displays its IP address on the serial monitor
+5. **Open the web interface**: Enter the IP address in your browser (e.g., `http://192.168.1.100`)
+6. **Configure timers**: Define your three timer schedules, set manual duration, and click "update" to save
+
+**Default behavior**: On power-up, all relays are OFF. Timers activate only on schedule or by manual trigger via button/web UI.
+
+---
+
+
+</script>
+
+  <script id="md-MicroControllers/README.md" type="text/markdown"># Micro Controller Projects
+
+## NodeMCU
+
+- [Timer based Power Supply with Web Server Configuration](NodeMCU/TimerBased_PowerSupply/Documentation.md)
+
+</script>
+
+  <script id="md-README.md" type="text/markdown"># Public
+Public Repository of Remko Baur
+
+<img src="TrustMe-Cover.jpeg" alt="TrustMe-Cover.jpeg" width="400px" >
+
+## Content
+- [Crafting Projects](Craft-Projects/README.md)
+- [Micro Controller](MicroControllers/README.md)
+- [Unity](Unity/HouseBuilder/Documentation/README.md)</script>
+
+  <script id="md-Unity/HouseBuilder/Documentation/FurnitureWallCreator.md" type="text/markdown"># FurnitureWallCreator
+
+## Overview
+`FurnitureWallCreator` is an editor-friendly Unity component that instantiates a wall of furniture items (`Cl_Furniture`) as child GameObjects. It supports batching creation via an inspector toggle, optional mesh merging (delegated to `FurnitureCreator`), and a quick example list generator. The component runs in edit mode and reacts to boolean flags in the inspector.
+
+Script location: [Unity/HouseBuilder/Assets/Scripts/Furnitures/FurnitureWallCreator.cs](../Assets/Scripts/Furnitures/FurnitureWallCreator.cs)
+
+## Quick start
+1. Add `FurnitureWallCreator` to a GameObject in your scene.
+2. Assign `material`, `handle`, and `front` prefabs in the inspector.
+3. Populate `furnitureList` or use `create_example_list()` from the inspector (see Actions).
+4. Toggle `ButtonCreateAllFurnitures` to generate the wall of furniture.
+
+## Example Result:
+
+![FurnitureWallBuilder_Result](media/FurnitureWallBuilder_Result.png)
+
+## Inspector fields
+
+![FurnitureWallBuilder_Inspector](media/FurnitureWallBuilder_Inspector.png)
+
+- Actions
+  - `ButtonCreateAllFurnitures`: Builds all furniture in `furnitureList` under a new `FurnCuster` child.
+  - `ButtonDestroyAllChildren`: Removes all children under the current GameObject.
+- Settings
+  - `enableMergeMeshes`: Passed to each `FurnitureCreator` and `Cl_Furniture` for mesh merging.
+  - `handleOffset`: Default handle offset for each furniture item.
+  - `furnitureList`: List of `Cl_Furniture` instances to create.
+  - `copyLastFurniture`: Adds a copy of the last list entry to `furnitureList`.
+  - `material`: Default material applied to each furniture item.
+- Prefabs
+  - `handle`: Handle prefab for doors.
+  - `front`: Front panel prefab.
+
+## Actions and behavior
+- Update loop: `Update()` checks inspector flags every frame (including edit mode).
+- Create all furnitures
+  - Creates a parent GameObject named `FurnitureCluster` under this component.
+  - For each `Cl_Furniture`, it creates a `FurnitureCreator` component and a child `furnGO` GameObject.
+  - Positions each child along the local Z axis, using each furniture width and `posOffset`.
+- Copy last furniture
+  - Adds a duplicate of the last `Cl_Furniture` entry to the list.
+  - Note: this is a shallow copy if `Cl_Furniture` contains reference types.
+- Destroy all children
+  - Calls `Cl_MyMaster.destroyAllChildren(gameObject)`.
+
+## Example list
+`create_example_list()` clears the current list and adds three sample cabinets with basic dimensions, door type, rows, and columns. This is useful for quickly testing layout and prefab wiring.
+
+## FurnitureCreator (brief)
+`FurnitureCreator` builds a single furniture item from a `Cl_Furniture` definition. It runs in edit mode and uses inspector booleans to trigger actions.
+
+Script location: [Unity/HouseBuilder/Assets/Scripts/Furnitures/FurnitureCreator.cs](../Assets/Scripts/Furnitures/FurnitureCreator.cs)
+
+- Actions: `ButtonCreateShelf` creates or reuses `furnGO`, calls `construct_shelf()`, then `create_furniture()`.
+- ButtonCreateExamples: triggers `init_furniture()` to load the selected `Template` into the `furniture` definition.
+- Materials: `material` sets the default board material; `updateMaterials` pushes materials into `SetMaterialForAllChilds` components under the object.
+- JSON: `ButtonJsonExport` writes `Cl_Furniture` to `StreamingAssets/json`, `ButtonJsonImport` loads it back.
+- Templates: `Template` + `init_furniture()` populate common sizes like `Kallax_2x2` and `Pax_1mx2m`.
+- Mesh merging: `enableMergeMeshes` toggles `MeshCombiner.Execute` on the generated furniture.
+
+Template list (`E_Furniture`):
+- `Expedit_4x4`
+- `Kallax_2x2`
+- `Kallax_4x4`
+- `Pax_1mx2m`
+- `Shelf_3x3`
+- `Kitchen_80x70`
+- `Kitchen_40x70`
+- `Kitchen_60x70`
+
+## Related scripts and types
+- `Cl_Furniture` (furniture data)
+- `FurnitureCreator` (builds a single furniture GameObject)
+- `Cl_MyMaster` (hierarchy utilities)
+
+Related folder: [Unity/HouseBuilder/Assets/Scripts/Furnitures](../Assets/Scripts/Furnitures)
+
+## Notes
+- The component uses `[ExecuteInEditMode]`, so actions can run without Play mode. 
+- The parent name is `FurnitureCluster`. If you need a different name, adjust the source.
+- Because actions run in edit mode, consider clearing generated objects before saving the scene if needed.
+</script>
+
+  <script id="md-Unity/HouseBuilder/Documentation/HouseBuilder.md" type="text/markdown"># HouseBuilder module (houseCreator)
+
+## Overview
+The `houseCreator` component is an editor-friendly Unity module that builds a floor layout from data (`Cl_Floor` and `Cl_Room`), can import and export JSON, generates example layouts, and toggles visibility of tagged sub-objects. It runs in edit mode and reacts to inspector "button" booleans that are reset after each action.
+
+Script location: [Unity/HouseBuilder/Assets/Scripts/HouseBuilder/houseCreator.cs](../Assets/Scripts/HouseBuilder/houseCreator.cs)
+
+## Example Result:
+
+![Flat_TopView](media/Flat_TopView.png)
+
+## Quick start
+1. Add `houseCreator` to a GameObject in your scene.
+2. Assign a `C_Materials` instance to `materials` in the inspector.
+3. Set `jsonFile` and `jsonPath` (relative to `Assets`).
+4. Use the inspector booleans to run actions (see below).
+
+## Inspector fields
+
+|HouseBuilder| Rooms|
+|-|-|
+|![HouseBuilder_Inspector](media/HouseBuilder_Inspector.png) | ![HouseBuilder_Inspector_Rooms](media/HouseBuilder_Inspector_Rooms.png)|
+
+- Json Settings
+  - `jsonFile`: File name used for import/export, default `Floor.json`.
+  - `jsonPath`: Relative folder under `Assets`. Default `StreamingAssets/json`.
+- Action toggles
+  - `ButtonDoAllRooms`: Builds all rooms for the current `floor`.
+  - `ButtonCreateExamples`: Clears the floor, initializes, and generates an example apartment layout.
+  - `ButtonDestroyAllChildren`: Destroys all children of the GameObject.
+- Enable Items
+  - `ToggleTag`: One of `ceiling`, `door`, `window`.
+  - `ButtonToggleTagActive`: Toggles active state of tagged objects under this GameObject.
+- Json Import/Export
+  - `ButtonJsonImport`: Clears and loads the floor from JSON.
+  - `ButtonJsonExport`: Writes the current floor to JSON.
+- Room List
+  - `floor`: The `Cl_Floor` data structure (rooms, height, wall thickness, etc.).
+- Materials
+  - `materials`: The `C_Materials` data used during generation of walls, floor, windows, and doors
+
+
+## Actions and behavior
+- Update loop: `Update()` calls `ButtonActions()` every frame (including edit mode). Each action resets its boolean to `false` after running.
+- Build all rooms: `ButtonDoAllRooms` calls `floor.create(gameObject)` to generate geometry.
+- Toggle tag visibility: `ButtonToggleTagActive` uses `Cl_MyMaster.findChildrenByTagMultiLevel(tag, gameObject, 5)` and toggles `SetActive` for each match.
+- Import JSON: `ButtonJsonImport` clears the floor and loads JSON from disk.
+- Export JSON: `ButtonJsonExport` writes the current floor data as JSON.
+- Create example: `ButtonCreateExamples` clears, initializes, then creates a sample apartment with multiple rooms.
+- Destroy children: `ButtonDestroyAllChildren` calls `Cl_MyMaster.destroyAllChildren(gameObject)`.
+
+## JSON import and export
+
+The full house configuration can be imported and exported via json files:
+- Export uses `JsonUtility.ToJson(floor, true)`.
+- Import uses `JsonUtility.FromJson<Cl_Floor>(jsonText)`.
+- Path resolution is based on `Application.dataPath`, `jsonPath`, and `jsonFile`.
+- Make sure your folder exists under `Assets` (for example, `Assets/StreamingAssets/json`).
+
+## Example layout
+`createExampleList()` generates a multi-room apartment, including:
+- Flur_p1 (hallway)
+- Wohnzimmer (living room)
+- Kueche (kitchen)
+- Balkon (balcony)
+- Arbeitszimmer (office)
+- Kinderzimmer (kids room)
+- Schlafzimmer (bedroom)
+- Bad (bathroom)
+- Kammer (storage)
+- Flur_p2 (hallway)
+- Gaeste-WC (guest WC)
+
+These rooms use `Cl_Room.place(...)` and add doors, windows, and wall modules to demonstrate the layout features.
+
+## Cl_Room (data model)
+`Cl_Room` defines a single room's size, position, and wall openings. It lives in [Unity/HouseBuilder/Assets/Scripts/HouseBuilder/Cl_HouseObjectClasses.cs](../Assets/Scripts/HouseBuilder/Cl_HouseObjectClasses.cs).
+
+- Core fields: `name`, `length`, `width`, and `pos` (2D floor position).
+- Wall control: `activeWalls` is a 6-element array for N, S, W, E, ceiling, and floor walls.
+- Openings and fixtures: `modules` holds `WallModule` entries for doors, windows, holes, and lights.
+- Relative placement: `relPlace` stores `refRoomName`, `direction`, and `offset` used by `place(...)`.
+- Convenience methods: `addDoor`, `addWindow`, and `addLight` add standard-sized modules.
+- Placement directions: `place(...)` accepts N, S, W, E, NE, NW, SE, SW, and edge-aligned variants EN, WN, ES, WS.
+
+## Related scripts and types
+The component depends on types defined elsewhere in the HouseBuilder scripts, including:
+- `Cl_Floor`, `Cl_Room`, `C_Materials`, `WallModule`, and `ModuleType` (data and generation)
+- `Cl_MyMaster` (hierarchy utilities)
+
+Relevant script folder: [Unity/HouseBuilder/Assets/Scripts/HouseBuilder](../Assets/Scripts/HouseBuilder)
+
+## Notes
+- The component uses `[ExecuteInEditMode]`, so actions can run without Play mode.
+- Ensure the tags `ceiling`, `door`, and `window` exist in the project Tag Manager.
+- The current example layout uses fixed dimensions and names; adjust `createExampleList()` for custom templates.
+</script>
+
+  <script id="md-Unity/HouseBuilder/Documentation/ItemModificator.md" type="text/markdown"># Item Modification scripts
+
+## Overview
+This folder contains small editor-friendly utilities for duplicating objects, changing materials, and combining meshes at edit time.
+
+Folder: [Unity/HouseBuilder/Assets/Scripts/ItemModificator](../Assets/Scripts/ItemModificator)
+
+## Results
+
+![ObjectMultiplier](media/ObjectMultiplier.png)
+
+- left shelf: uses component **DuplicatorGrid** for cloning one folder, change its color and place it at given grid points
+- right shelf: uses component **ItemMultiplicatorGrid** for cloning one box and place it at given grid points
+
+## ClusterCombiner
+File: [Unity/HouseBuilder/Assets/Scripts/ItemModificator/ClusterCombiner.cs](../Assets/Scripts/ItemModificator/ClusterCombiner.cs)
+
+- Purpose: Find all children with a given tag and attach `MeshCombiner` to each to merge tagged meshes.
+- Inspector controls: `Execute`, `ClusterTag`, `MeshTags`, `removeEmptyChildren`, `attachRemainingSubChildren`.
+- Behavior: On `Execute`, finds children by tag, adds `MeshCombiner`, configures it, and triggers `Execute` on each combiner.
+
+## DuplicatorGrid
+File: [Unity/HouseBuilder/Assets/Scripts/ItemModificator/DuplicatorGrid.cs](../Assets/Scripts/ItemModificator/DuplicatorGrid.cs)
+
+- Purpose: Clone an object into a stacked grid and optionally vary materials.
+- Key settings: `block_amount`, `rows`, `columns`, `delta_x`, `delta_y`, `delta_z`, `obj_dx`, `obj_dz`.
+- Material options: `change_materials`, `childName`, `mix_type` (rows, cols, stack, mixed), `myMaterials`.
+- Behavior: Runs `create_clones()` in `Start()`; can skip the first clone to keep the original.
+
+## ItemMultiplicatorGrid
+File: [Unity/HouseBuilder/Assets/Scripts/ItemModificator/ItemMultiplicatorGrid.cs](../Assets/Scripts/ItemModificator/ItemMultiplicatorGrid.cs)
+
+- Purpose: Simple grid duplicator for a single prefab.
+- Key settings: `rows`, `columns`, `delta_x`, `delta_y`, `delta_z`.
+- Behavior: Instantiates a grid of `Box` in `Start()` and parents clones to the current GameObject.
+
+## MeshCombiner
+File: [Unity/HouseBuilder/Assets/Scripts/ItemModificator/MeshCombiner.cs](../Assets/Scripts/ItemModificator/MeshCombiner.cs)
+
+- Purpose: Merge meshes and colliders of child objects that match tag filters.
+- Inspector controls: `Execute`, `FilterTags`, `ParentGO`, `destroyChildren`, `attachRemainingSubChildren`, `removeEmpty`.
+- Behavior: On `Execute`, it moves to origin, combines meshes and colliders, removes or deactivates children, optionally attaches remaining sub-children, and cleans empty nodes.
+- Notes: Uses `Mesh.CombineMeshes` and preserves materials across submeshes. Disables itself after running.
+
+## MeshCompiner_ExecuteAll
+File: [Unity/HouseBuilder/Assets/Scripts/ItemModificator/MeshCompiner_ExecuteAll.cs](../Assets/Scripts/ItemModificator/MeshCompiner_ExecuteAll.cs)
+
+- Purpose: Trigger `Execute` on all `MeshCombiner` instances in the scene.
+- Behavior: On `Execute`, finds all `MeshCombiner` objects with `FindObjectsOfType` and sets their `Execute` flag.
+
+## SetMaterialForAllChilds
+File: [Unity/HouseBuilder/Assets/Scripts/ItemModificator/SetMaterialForAllChilds.cs](../Assets/Scripts/ItemModificator/SetMaterialForAllChilds.cs)
+
+- Purpose: Update materials for boards, doors, and handles under a target object.
+- Inspector controls: `materialBoards`, `materialDoor`, `materialHandle`, `Execute`.
+- Behavior: On `Execute`, finds children by tags (`board`, `door`, `handle`) and applies materials. Also updates the MeshRenderer materials on the root.
+- Namespace note: This script is in `My.ns_Furniture` even though it sits in ItemModificator.
+</script>
+
+  <script id="md-Unity/HouseBuilder/Documentation/README.md" type="text/markdown"># HouseBuilder < Unity-Project >
+
+## Overview
+This folder documents the HouseBuilder Unity tools and how they are used to generate rooms, furniture, and supporting utilities. It covers JSON import/export, editor-time actions, and mesh or material helpers. Room and furniture measurements in the layouts are modeled to accurate dimensions.
+
+## Documents
+- [HouseBuilder.md](HouseBuilder.md): `houseCreator` workflow, JSON import/export, example layout generation, and the `Cl_Room` data model.
+- [FurnitureWallCreator.md](FurnitureWallCreator.md): Wall-of-furniture generator, inspector actions, and a brief `FurnitureCreator` reference with template list.
+- [ItemModificator.md](ItemModificator.md): Utility scripts for grid duplication, material updates, and mesh combining.
+
+## Results
+These components were used to model a flat. The project is still in progress; current snapshots:
+
+- ![Flat_TopView](media/Flat_TopView.png)
+- ![MyOffice](media/MyOffice.png)
+- ![MyKitchen](media/MyKitchen.png)</script>
+
+  <script>
+    const START_DOC = "README.md";
+    const navList = document.getElementById("navList");
+    const content = document.getElementById("content");
+    const breadcrumbs = document.getElementById("breadcrumbs");
+
+    marked.setOptions({
+      gfm: true,
+      breaks: false,
+      mangle: false,
+      headerIds: true
+    });
+
+    function normalizePath(path) {
+      return path.replace(/\\/g, "/").replace(/^\.\//, "").replace(/^\//, "");
+    }
+
+    function encodePath(path) {
+      return path.split("/").map((segment) => encodeURIComponent(segment)).join("/");
+    }
+
+    function splitHash(raw) {
+      const [pathPart, ...hashParts] = raw.split("#");
+      return {
+        path: normalizePath(pathPart),
+        hash: hashParts.length ? `#${hashParts.join("#")}` : ""
+      };
+    }
+
+    function resolvePath(baseDoc, target) {
+      const cleanedTarget = normalizePath(target.split("#")[0]);
+      if (!cleanedTarget) return normalizePath(baseDoc);
+      const baseDir = baseDoc.includes("/") ? baseDoc.slice(0, baseDoc.lastIndexOf("/") + 1) : "";
+      const resolved = new URL(cleanedTarget, `https://local/${baseDir}`).pathname.slice(1);
+      return normalizePath(resolved);
+    }
+
+    function getEmbeddedDocs() {
+      const docs = new Map();
+      for (const node of document.querySelectorAll('script[type="text/markdown"][id^="md-"]')) {
+        const path = node.id.replace(/^md-/, "");
+        docs.set(path, node.textContent || "");
+      }
+      return docs;
+    }
+
+    function extractTitle(markdown, fallbackPath) {
+      const heading = markdown.match(/^#\s+(.+)$/m);
+      if (heading) return heading[1].trim();
+      const base = fallbackPath.split("/").pop() || fallbackPath;
+      return base.replace(/\.md$/i, "");
+    }
+
+    function findLinkedMarkdown(markdown, currentDoc) {
+      const links = [];
+      const regex = /\[[^\]]*\]\(([^)]+\.md(?:#[^)]+)?)\)/gi;
+      for (const match of markdown.matchAll(regex)) {
+        const raw = match[1].trim();
+        if (!raw) continue;
+        const { path } = splitHash(raw);
+        if (!path) continue;
+        links.push(resolvePath(currentDoc, path));
+      }
+      return [...new Set(links)];
+    }
+
+    function isExternalUrl(url) {
+      return /^(?:[a-z]+:)?\/\//i.test(url) || /^(data:|mailto:|javascript:|#)/i.test(url);
+    }
+
+    const docs = getEmbeddedDocs();
+    const titles = new Map([...docs.entries()].map(([path, md]) => [path, extractTitle(md, path)]));
+
+    function ensureReachableLinksInNav() {
+      const queue = [START_DOC];
+      const seen = new Set();
+      while (queue.length) {
+        const current = queue.shift();
+        if (seen.has(current) || !docs.has(current)) continue;
+        seen.add(current);
+        const md = docs.get(current) || "";
+        for (const linked of findLinkedMarkdown(md, current)) {
+          if (!seen.has(linked) && docs.has(linked)) queue.push(linked);
+        }
+      }
+      for (const key of [...docs.keys()]) {
+        if (!seen.has(key) && key !== START_DOC) {
+          docs.delete(key);
+          titles.delete(key);
+        }
+      }
+    }
+
+    function prettyName(text) {
+      return (text || "").replace(/[_-]/g, " ").trim();
+    }
+
+    function getDocLabel(docPath) {
+      if (docPath === START_DOC) {
+        return titles.get(docPath) || "Home";
+      }
+
+      const parts = docPath.split("/");
+      const fileName = parts[parts.length - 1] || "";
+      if (/^README\.md$/i.test(fileName) && parts.length > 1) {
+        return prettyName(parts[parts.length - 2]);
+      }
+
+      return titles.get(docPath) || prettyName(fileName.replace(/\.md$/i, ""));
+    }
+
+    function isGroupRootDoc(docPath) {
+      return /\/README\.md$/i.test(docPath);
+    }
+
+    function getGroupRootDoc(groupDocs) {
+      const readme = groupDocs.find((path) => isGroupRootDoc(path));
+      return readme || groupDocs[0] || "";
+    }
+
+    function getTopLevelOrder() {
+      const order = [];
+      const startDocMarkdown = docs.get(START_DOC) || "";
+
+      for (const linkedPath of findLinkedMarkdown(startDocMarkdown, START_DOC)) {
+        const top = linkedPath.split("/")[0];
+        if (top && !order.includes(top)) {
+          order.push(top);
+        }
+      }
+
+      for (const path of docs.keys()) {
+        if (path === START_DOC) continue;
+        const top = path.split("/")[0];
+        if (top && !order.includes(top)) {
+          order.push(top);
+        }
+      }
+
+      return order;
+    }
+
+    function sortGroupDocs(a, b) {
+      const aIsReadme = /\/README\.md$/i.test(a);
+      const bIsReadme = /\/README\.md$/i.test(b);
+      if (aIsReadme !== bIsReadme) return aIsReadme ? -1 : 1;
+
+      const depthDiff = a.split("/").length - b.split("/").length;
+      if (depthDiff !== 0) return depthDiff;
+
+      return getDocLabel(a).localeCompare(getDocLabel(b));
+    }
+
+    function buildNav(activeDoc) {
+      const groups = new Map();
+      for (const path of docs.keys()) {
+        if (path === START_DOC) continue;
+        const top = path.split("/")[0];
+        if (!groups.has(top)) groups.set(top, []);
+        groups.get(top).push(path);
+      }
+
+      const items = [];
+      const homeActive = activeDoc === START_DOC ? "active" : "";
+      items.push(`<li><a class="nav-link nav-home ${homeActive}" style="--level: 0" href="#${encodeURIComponent(START_DOC)}">${getDocLabel(START_DOC)} (main)</a></li>`);
+      items.push('<li><hr class="nav-double-separator" /></li>');
+
+      let isFirstGroup = true;
+      for (const top of getTopLevelOrder()) {
+        if (!groups.has(top)) continue;
+        if (!isFirstGroup) {
+          items.push('<li><hr class="nav-separator" /></li>');
+        }
+        isFirstGroup = false;
+
+        const groupDocs = groups.get(top).slice().sort(sortGroupDocs);
+        const rootDoc = getGroupRootDoc(groupDocs);
+        const groupIsActive = activeDoc === rootDoc || activeDoc.startsWith(`${top}/`);
+
+        for (const path of groupDocs) {
+          const isRoot = path === rootDoc;
+          if (!isRoot && !groupIsActive) continue;
+
+          const active = path === activeDoc ? "active" : "";
+          const level = isRoot ? 1 : Math.max(1, path.split("/").length - 2);
+          const label = getDocLabel(path);
+          const itemized = isRoot ? "" : "itemized";
+          items.push(`<li><a class="nav-link ${itemized} ${active}" style="--level: ${level}" href="#${encodeURIComponent(path)}">${label}</a></li>`);
+        }
+      }
+
+      navList.innerHTML = items.join("");
+    }
+
+    function setBreadcrumb(path) {
+      breadcrumbs.textContent = path.split("/").join(" / ");
+    }
+
+    function buildRenderer(currentDoc) {
+      const renderer = new marked.Renderer();
+
+      renderer.link = ({ href, title, tokens }) => {
+        const text = marked.Parser.parseInline(tokens);
+        if (!href) return text;
+
+        const rawHref = href.trim();
+        if (/^https?:\/\//i.test(rawHref)) {
+          const ttl = title ? ` title="${title}"` : "";
+          return `<a href="${rawHref}" target="_blank" rel="noopener"${ttl}>${text}</a>`;
+        }
+
+        const { path, hash } = splitHash(rawHref);
+        const resolved = resolvePath(currentDoc, path || currentDoc);
+
+        if ((path || "").toLowerCase().endsWith(".md")) {
+          const targetDoc = docs.has(resolved) ? `${resolved}${hash}` : resolved;
+          if (docs.has(resolved)) {
+            return `<a href="#${encodeURIComponent(targetDoc)}">${text}</a>`;
+          }
+          return `<a href="../${encodePath(resolved)}">${text}</a>`;
+        }
+
+        const assetHref = `../${encodePath(resolvePath(currentDoc, rawHref))}`;
+        const ttl = title ? ` title="${title}"` : "";
+        return `<a href="${assetHref}"${ttl}>${text}</a>`;
+      };
+
+      renderer.image = ({ href, title, text }) => {
+        const src = `../${encodePath(resolvePath(currentDoc, href || ""))}`;
+        const ttl = title ? ` title="${title}"` : "";
+        return `<a href="${src}" target="_blank" rel="noopener"${ttl}><img src="${src}" alt="${text || ""}" loading="lazy"${ttl} /></a>`;
+      };
+
+      return renderer;
+    }
+
+    function rewriteRenderedAssetLinks(rootElement, currentDoc) {
+      for (const image of rootElement.querySelectorAll("img[src]")) {
+        const src = (image.getAttribute("src") || "").trim();
+        if (!src || isExternalUrl(src)) continue;
+        if (src.startsWith("../")) continue;
+        const resolved = resolvePath(currentDoc, src);
+        const finalSrc = `../${encodePath(resolved)}`;
+        image.setAttribute("src", finalSrc);
+
+        const parentLink = image.closest("a");
+        if (parentLink) {
+          const currentHref = (parentLink.getAttribute("href") || "").trim();
+          if (!currentHref || !isExternalUrl(currentHref)) {
+            parentLink.setAttribute("href", finalSrc);
+            parentLink.setAttribute("target", "_blank");
+            parentLink.setAttribute("rel", "noopener");
+          }
+          continue;
+        }
+
+        const link = document.createElement("a");
+        link.setAttribute("href", finalSrc);
+        link.setAttribute("target", "_blank");
+        link.setAttribute("rel", "noopener");
+        image.replaceWith(link);
+        link.appendChild(image);
+      }
+
+      for (const anchor of rootElement.querySelectorAll("a[href]")) {
+        const href = (anchor.getAttribute("href") || "").trim();
+        if (!href || isExternalUrl(href)) continue;
+        if (href.startsWith("../")) continue;
+        if (href.startsWith("#")) continue;
+        if (/\.md(?:#.*)?$/i.test(href)) continue;
+        const resolved = resolvePath(currentDoc, href);
+        anchor.setAttribute("href", `../${encodePath(resolved)}`);
+      }
+    }
+
+    function moveCraftProjectDetailsIntoDescription(rootElement, currentDoc) {
+      if (!currentDoc.startsWith("Craft-Projects/")) return;
+
+      for (const table of rootElement.querySelectorAll("table")) {
+        const headerCells = [...table.querySelectorAll("thead th")];
+        if (!headerCells.length) continue;
+
+        const headers = headerCells.map((cell) => (cell.textContent || "").trim().toLowerCase());
+        const descIndex = headers.findIndex((name) => name === "description");
+        const detailsIndex = headers.findIndex((name) => name === "details");
+        if (descIndex < 0 || detailsIndex < 0 || descIndex === detailsIndex) continue;
+
+        table.style.tableLayout = "fixed";
+        for (const row of table.querySelectorAll("tr")) {
+          const cells = [...row.children];
+          if (cells.length > descIndex) {
+            cells[descIndex].style.width = "33.333%";
+            cells[descIndex].style.maxWidth = "33.333%";
+          }
+        }
+
+        const bodyRows = [...table.querySelectorAll("tbody tr")];
+        for (const row of bodyRows) {
+          const cells = [...row.querySelectorAll("td")];
+          if (cells.length <= Math.max(descIndex, detailsIndex)) continue;
+
+          const descCell = cells[descIndex];
+          const detailsCell = cells[detailsIndex];
+          const detailsHtml = (detailsCell.innerHTML || "").trim();
+          const detailsText = (detailsCell.textContent || "").replace(/ /g, " ").trim();
+          if (!detailsHtml || !detailsText) continue;
+
+          let list = descCell.querySelector("ul.cp-details-list");
+          if (!list) {
+            list = document.createElement("ul");
+            list.className = "cp-details-list";
+            descCell.appendChild(list);
+          }
+
+          const item = document.createElement("li");
+          item.innerHTML = detailsHtml;
+          list.appendChild(item);
+          detailsCell.innerHTML = "";
+        }
+
+        for (const row of table.querySelectorAll("tr")) {
+          const cells = [...row.children];
+          if (cells.length > detailsIndex) {
+            cells[detailsIndex].remove();
+          }
+        }
+      }
+    }
+
+    function renderPage() {
+      const rawHash = decodeURIComponent(location.hash.replace(/^#/, "")).trim();
+      const { path, hash } = splitHash(rawHash || START_DOC);
+      const docPath = docs.has(path) ? path : START_DOC;
+      const markdown = docs.get(docPath);
+
+      if (!markdown) {
+        content.innerHTML = `<div class="error">Document not found: ${docPath}</div>`;
+        return;
+      }
+
+      const renderer = buildRenderer(docPath);
+      content.innerHTML = marked.parse(markdown, { renderer });
+      rewriteRenderedAssetLinks(content, docPath);
+      moveCraftProjectDetailsIntoDescription(content, docPath);
+      setBreadcrumb(docPath);
+      buildNav(docPath);
+
+      if (hash) {
+        requestAnimationFrame(() => {
+          const target = document.getElementById(hash.slice(1));
+          if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      } else {
+        window.scrollTo({ top: 0, behavior: "instant" });
+      }
+    }
+
+    ensureReachableLinksInNav();
+    renderPage();
+    window.addEventListener("hashchange", renderPage);
+  </script>
+</body>
+</html>
