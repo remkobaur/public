@@ -79,7 +79,7 @@ String getPage(){
   page += html_print("      <meta http-equiv='refresh' content='60' name='viewport'>");
   page += html_print("      <script src='./Zeitschaltuhr_files/jquery.min.js.Download'></script>");
   page += html_print("      <script src='./Zeitschaltuhr_files/bootstrap.min.js.Download'></script>");
-  page += html_print("      <title>Zeitschaltuhr</title>");
+  page += html_print("      <title>Timer Switch</title>");
   page += html_print("      <style>");
   page += html_print("      html{width:400px; height:100%;  }");
   page += html_print("      body{width:400px; height:100%; align:center; transform: scale("+(String)html_scale+"); transform-origin: 0 0};");
@@ -106,10 +106,10 @@ String getPage(){
   page += html_print("   <!-- Title Author server time-->");
   page += html_print("      <table class = 'table2'  cellpadding ='5px'>");
   page += html_print("      <!-- <tr><td margin-right='40'>-->");
-  page += html_print("         <tr><td><span class='text9'>Zeitschaltuhr</span>");
+  page += html_print("         <tr><td><span class='text9'>Timer Switch</span>");
   page += html_print("         </td></tr><tr><td><!-- &emsp;&emsp;-->");
   page += html_print("         <span class='text3'>R. Baur  &lt;10.08.2018&gt;</span> </td></tr>");
-  page += html_print("         <tr><td><span class='text1'>&ensp; Zeit:&ensp; </span> &emsp; <span class='text2'> "+aktZeit+" </span></td></tr>");
+  page += html_print("         <tr><td><span class='text1'>&ensp; Time:&ensp; </span> &emsp; <span class='text2'> "+aktZeit+" </span></td></tr>");
   page += html_print("      </table>");
   page += html_print("      <br>");
   page += html_print("");
@@ -117,7 +117,7 @@ String getPage(){
   page += html_print("      <table class = 'table1' border='1'>");
   page += html_print("         <thead>");
   page += html_print("            <tr class='fat'>");
-  page += html_print("            <th>ID</th><th>Stunde</th><th>Minute</th><th>Dauer</th></tr>");
+  page += html_print("            <th>ID</th><th>Hour</th><th>Minute</th><th>Duration</th></tr>");
   page += html_print("         </thead>");
   page += html_print("         <tbody>");
    for (int z=0;z<Max_Entries;z++){
@@ -145,18 +145,18 @@ String getPage(){
   page += html_print("      <table text-align='center'><tr><td>");
   page += html_print("         <div class='inline'>");
   if (Switch_is_on())
-  {page += html_print("               <label>Schalter ist</label> <b>AN</b> ");}
+  {page += html_print("               <label>Switch is</label> <b>ON</b> ");}
   else
-  {page += html_print("               <label>Schalter ist</label> <b>AUS</b> ");}
+  {page += html_print("               <label>Switch is</label> <b>OFF</b> ");}
   //page += html_print("               <label>Schalter ist</label> <b>AUS</b> &ensp;soilMoisturePercent: "+(String)soilMoisturePercent+"%");
   page += html_print("         </div>");
   page += html_print("         </td><td>");
   page +=       create_Button("B1","ON","on",1);
   page += html_print("         </td></tr><tr><td>");
   if (waterLevelOk)
-    {page += html_print("               <label>Wasserstand: </label> <b>Okay</b>");}
+    {page += html_print("               <label>Water level: </label> <b>Okay</b>");}
   else
-    {page += html_print("               <label>Wasserstand: </label> <b> leer !!!</b>");}
+    {page += html_print("               <label>Water level: </label> <b>empty !!!</b>");}
   page += html_print("         </td><td>");
   page +=       create_Button("B1","OFF","off",0);
   
@@ -168,7 +168,7 @@ String getPage(){
   page += html_print("      <table class = 'table3' border='1'>");
   page += html_print("         <thead>");
   page += html_print("            <tr class='fat'>");
-  page += html_print("            <th>Log-Datei</th></tr>");
+  page += html_print("            <th>Log file</th></tr>");
   page += html_print("         </thead>");
   page += html_print("         <tbody>");
    for (int z=0;z<Log_length;z++){
@@ -195,7 +195,7 @@ void handleB1(boolean is_on) {
   print_console("Button 1 is pressed"); 
   if (is_on){Switch_on();}
   else      {Switch_off();}
-  Log_write("Manuell");
+  Log_write("Manual");
   server.send ( 200, "text/html", getPage() );
 }
 
@@ -278,4 +278,3 @@ void exec_WebServer(){
     server.handleClient();
 }
     
-

@@ -1,8 +1,14 @@
 # WifiTimer: Timer-Based Power Supply with Web Server Configuration
 
+I started this project before going on a two-week vacation, knowing my balcony plants would need watering in my absence. When I installed an automatic watering system and tested it, I discovered that its preset watering cycles didn't match my needs: too much water left the soil muddy, while insufficient water caused plants to dry out, especially on hot, sunny days. To solve this problem, I switched the pump to manual mode and instead controlled the watering system by scheduling the power supply voltage. This has kept my balcony beautifully green for over 7 years.
+
 ## Project Summary
 
 WifiTimer is a smart timer-based water pump controller built on the ESP8266 (NodeMCU). It combines automatic scheduling, manual control, and safety monitoring via a responsive web interface. The system can operate up to three independent timer schedules, with real-time adjustments stored persistently in EEPROM.
+
+|Hardware Setup| Electronics only|
+|-|-|
+|![WifiTimer_Electronics.jpeg](docu/WifiTimer_with_cables.jpeg)|![WifiTimer_Electronics.jpeg](docu/WifiTimer_Electronics.jpeg)|
 
 **Key capabilities:**
 - **Scheduling**: Configure up to 3 independent timer events with custom start times and durations
@@ -27,7 +33,7 @@ The web interface allows complete remote control and configuration:
 - **Persistent storage**: Click the `update` button to save all settings to EEPROM; configuration survives power cycles
 - **Activity log**: View the last 5 pump events (on/off/auto/manual) with timestamps
 
-![HTML_Configurator.png](docu/HTML_Configurator.png)
+<img src="docu/HTML_Configurator.jpeg" alt="HTML_Configurator" width="400" />
 
 ---
 
@@ -85,7 +91,7 @@ To build and upload this project, configure the Arduino IDE with these settings:
 
 Refer to the screenshot below for visual reference:
 
-![Arduino Settings - WifiTimer.png](docu/Arduino_Settings_WifiTimer.png)
+![Arduino Settings - WifiTimer.png](docu/Arduino%20Settings%20-%20WifiTimer.png)
 
 ---
 

@@ -1,8 +1,11 @@
-//youtube: https://www.youtube.com/watch?v=cPltQK5LlGE
-//source https://github.com/llamacademy/doors/tree/main
+/* References:
+- youtube: https://www.youtube.com/watch?v=cPltQK5LlGE
+- source https://github.com/llamacademy/doors/tree/main
+*/
 using System.Collections;
 using UnityEngine;
 
+[ExecuteInEditMode]  
 public class Door : MonoBehaviour
 {
     public bool IsOpen = false;
