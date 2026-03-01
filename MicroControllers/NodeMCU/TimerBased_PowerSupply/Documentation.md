@@ -22,6 +22,15 @@ WifiTimer is a smart timer-based water pump controller built on the ESP8266 (Nod
 The code is modular and organized into focused library headers: IO control, timer/scheduling, web UI, and persistent configuration storage.
 
 ---
+## Secrets setup (Wi-Fi)
+
+To avoid committing Wi-Fi credentials to git, keep them in a local file:
+
+1. Create secrete config file `NodeMCU/TimerBased_PowerSupply/WifiTimer/MyWifiSettings.secret.h`
+2. Set your credentials in that local file:
+	- `#define WIFI_SSID "..."`
+	- `#define WIFI_PASSWORD "..."`
+3. Commit as usual. `MyWifiSettings.secret.h` is ignored via `.gitignore`.
 
 ## Configuration via Web Server
 

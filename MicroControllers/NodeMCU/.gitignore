@@ -1,0 +1,3 @@
+# Local Wi-Fi secrets (do not commit)
+MyWifiSettings.secret.h
+MySettings.secret.h
