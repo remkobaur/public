@@ -51,7 +51,6 @@ int max_temp(){
 
 
 void getWeather() { 
-  //http://api.openweathermap.org/data/2.5/forecast?q=wolfsburg,DE&cnt=3&appid=083fd066dd85af6d33e7716ce677f973
   //String "http://api.openweathermap.org/data/2.5/forecast?q="+W_API_loc+"&cnt=3&appid="+W_API_key;
  print_console("\nStarting connection to server..."); 
  print_console("WiFi.status=" + (String)WiFi.status());
