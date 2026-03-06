@@ -1,0 +1,9 @@
+*.pyc
+__pycache__/
+
+# Ignore everything under SoundBox/Files
+SoundBox/Files/**
+
+# But keep the Sound folder and everything inside it
+!SoundBox/Files/Sounds/
+!SoundBox/Files/Sounds/**

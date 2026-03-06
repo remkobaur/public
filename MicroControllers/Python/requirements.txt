@@ -1,0 +1,7 @@
+# Install these OS packages separately on Raspberry Pi:
+#   sudo apt install -y python3-smbus python3-cwiid python3-alsaaudio python3-spidev mpg123 alsa-utils
+# `time` is part of Python's standard library, so it is not listed here.
+
+mutagen
+RPi.GPIO
+spidev

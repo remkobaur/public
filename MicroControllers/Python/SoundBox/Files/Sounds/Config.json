@@ -1,0 +1,53 @@
+{
+  "Sounds": [
+    {
+      "Subfolder": "Sounds1",
+      "ID": 1,
+      "Sounds": [
+        "1_Hund.mp3",
+        "2_Pferd.mp3",
+        "3_Schaf.mp3",
+        "4_Huhn.mp3",
+        "5_Kuh.mp3",
+        "6_Schwein.mp3",
+        "992_Katze.mp3"
+      ]
+    },
+    {
+      "Subfolder": "Sounds2",
+      "ID": 2,
+      "Sounds": [
+        "01_polar bear.mp3",
+        "02_Pinguin.mp3",
+        "03_Delpfin.mp3",
+        "04_Schwertwal.mp3",
+        "05_Seehund.mp3",
+        "06_Wal-Buckelwal.mp3"
+      ]
+    },
+    {
+      "Subfolder": "Sounds3",
+      "ID": 3,
+      "Sounds": [
+        "01_Elefant.mp3",
+        "02_Schlange.mp3",
+        "03_Kamel.mp3",
+        "04_Löwe.mp3",
+        "05_Zebra.mp3",
+        "06_Nilpferd.mp3"
+      ]
+    },
+    {
+      "Subfolder": "Sounds4",
+      "ID": 4,
+      "Sounds": [
+        "01_Schiffshorn.mp3",
+        "02_Bicycle Bell Ringing.mp3",
+        "03_Bike-Horn.mp3",
+        "04_Train Horn sounds.mp3",
+        "05_Hupe-oldtimer.mp3",
+        "06_Truck horn.mp3"
+      ]
+    }
+  ]
+}

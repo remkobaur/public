@@ -1,0 +1,5 @@
+sticker:
+Card read UID: 136,4,95,196
+
+chip:
+Card read UID: 27,211,148,89
