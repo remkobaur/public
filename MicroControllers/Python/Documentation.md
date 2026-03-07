@@ -17,6 +17,9 @@ The final build consists of stacked wooden layers and an internal electronics co
 
 ![SoundBox_inside.drawio.png](docu/SoundBox_inside.drawio.png)
 
+***
+***
+
 ## Hardware Setup
 
 The following figure shows the hardware used in this project and the required wiring. To keep the setup flexible, I built a custom circuit board with sockets for ribbon cables, pin headers, and jumper wires. This allows me to run the SoundBox either from an internal power bank or from an external power supply. Furthermore, I can easily extend the circuit by adding additional GPIO signals.
@@ -32,7 +35,7 @@ The following figure shows the hardware used in this project and the required wi
 | Buttons | 6x buttons (read through port expander) |
 | Volume Buttons | 2x GPIO buttons (volume up/down) |
 | Speakers | USB powered, 3.5 mm jack |
-| Isolation Transformer | custom-built (2x jack sockets, 1:1 coils) |
+| Stereo Isolation Transformer | custom-built (2x jack sockets, 2x Transformer with ratio 1:1) |
 
 ### Hardware Roles
 
@@ -63,6 +66,7 @@ The following figure shows the hardware used in this project and the required wi
 - Keep all button inputs stable (pull-up or pull-down per wiring design) to avoid false triggers.
 
 ***
+***
 
 ## Setup Project on Raspberry Pi
 
@@ -76,6 +80,12 @@ The following figure shows the hardware used in this project and the required wi
 - Run installer script:
   - `chmod +x _Tools/install_python_ubuntu.sh`
   - `./_Tools/install_python_ubuntu.sh`
+- Purpose of `_Tools/install_python_ubuntu.sh`:
+  - Installs Python toolchain.
+  - Installs OS packages from apt hint in `requirements.txt`.
+  - Creates `.venv` with `--system-site-packages`.
+  - Installs pip dependencies.
+  - Validates imports and `mpg123` availability.
 
 ### Raspberry Pi Configuration
 - Enable interfaces:
@@ -86,6 +96,8 @@ The following figure shows the hardware used in this project and the required wi
 ### Install VS Code (Optional)
 - `chmod +x _Tools/install_vscode_raspberrypi.sh`
 - `./_Tools/install_vscode_raspberrypi.sh`
+- Purpose:
+  - Installs VS Code (`code` or fallback `code-oss`).
 
 ## Run Project
 
@@ -96,18 +108,48 @@ From folder `Python`:
 Alternative (direct main script):
 - `python SoundBox/SoundBox-RFID.py`
 
-## Configure Auto Start on Boot (Optional)
+### Configure Auto Start on Boot (Optional)
 
 - `chmod +x _Tools/add_autostartCommands_to_bashrc.sh`
 - `./_Tools/add_autostartCommands_to_bashrc.sh`
 
-This script appends commands to `~/.bashrc`:
-- activate virtual environment
-- start `SoundBox/startme.py`
+Purpose:
+- Makes `SoundBox/startme.py` executable.
+- Adds startup lines to current user's `~/.bashrc`.
+  - activate virtual environment
+  - start `SoundBox/startme.py`
 
 ***
+## Software Architecture
 
-## Software Dependencies
+### Runtime Entry Point
+
+Primary entry point:
+- `SoundBox/startme.py`
+
+`startme.py`:
+- Resolves project root dynamically.
+- Activates `.venv` in a bash subshell.
+- Starts `SoundBox/SoundBox-RFID.py`.
+
+Main app script:
+- `SoundBox/SoundBox-RFID.py`
+
+### High-Level Runtime Flow
+
+1. `startme.py` starts the app in the project virtual environment.
+2. `SoundBox-RFID.py` configures flags and paths in `MyToolBox`.
+3. `Config.json` is loaded to map RFID IDs to subfolders.
+4. Hardware classes initialize (GPIO, MCP23017, RC522).
+5. Main loop runs continuously:
+   - Check for RFID card changes.
+   - Refresh playlist if a new card is detected.
+   - Read button presses.
+   - Toggle play/stop for selected song.
+   - Update LED state based on active song.
+   - Process volume up/down buttons.
+
+### Software Dependencies
 
 From `requirements.txt`:
 - `mutagen`
@@ -129,32 +171,8 @@ Used features:
 - `spidev`: RC522 SPI communication
 - `smbus`: MCP23017 I2C communication
 
-## Runtime Entry Point
-
-Primary entry point:
-- `SoundBox/startme.py`
-
-`startme.py`:
-- Resolves project root dynamically.
-- Activates `.venv` in a bash subshell.
-- Starts `SoundBox/SoundBox-RFID.py`.
-
-Main app script:
-- `SoundBox/SoundBox-RFID.py`
-
-## High-Level Runtime Flow
-
-1. `startme.py` starts the app in the project virtual environment.
-2. `SoundBox-RFID.py` configures flags and paths in `MyToolBox`.
-3. `Config.json` is loaded to map RFID IDs to subfolders.
-4. Hardware classes initialize (GPIO, MCP23017, RC522).
-5. Main loop runs continuously:
-   - Check for RFID card changes.
-   - Refresh playlist if a new card is detected.
-   - Read button presses.
-   - Toggle play/stop for selected song.
-   - Update LED state based on active song.
-   - Process volume up/down buttons.
+***
+***
 
 ## Configuration Model
 
@@ -179,7 +197,7 @@ Important behavior:
 - Files are filtered to `.mp3` and `.wav` and sorted alphabetically.
 - Button index `0..5` maps to playlist position `0..5`.
 
-## Audio File Layout
+### Audio File Layout
 
 Expected root:
 - `SoundBox/Files/Sounds/`
@@ -193,6 +211,14 @@ Recommendation:
 - Use numeric prefixes for deterministic ordering, for example:
   - `01_intro.mp3`
   - `02_song.mp3`
+
+## Known Notes
+
+- Volume control depends on available ALSA mixer; `CL_MusicBox` auto-discovers mixers/cards.
+- `CL_WiiMote.py` is legacy and currently not part of the active app flow. (Wii controller should be used as a remote control for the sound box)
+
+***
+***
 
 ## Python Module Documentation (Full)
 
@@ -339,30 +365,3 @@ Behavior in runtime:
 
 Default key used by tools/classes:
 - `[0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]`
-
-
-
-## Bash Scripts
-
-### `_Tools/install_python_ubuntu.sh`
-Purpose:
-- Installs Python toolchain.
-- Installs OS packages from apt hint in `requirements.txt`.
-- Creates `.venv` with `--system-site-packages`.
-- Installs pip dependencies.
-- Validates imports and `mpg123` availability.
-
-### `_Tools/install_vscode_raspberrypi.sh`
-Purpose:
-- Installs VS Code (`code` or fallback `code-oss`).
-
-### `_Tools/add_autostartCommands_to_bashrc.sh`
-Purpose:
-- Makes `SoundBox/startme.py` executable.
-- Adds startup lines to current user's `~/.bashrc`.
-
-## Known Notes
-
-- Volume control depends on available ALSA mixer; `CL_MusicBox` auto-discovers mixers/cards.
-- `NFC_Write.py` and `RFID-Write-Data.py` still use `raw_input` (Python 2 style), so use Python 2 or adapt to `input()` for Python 3.
-- `CL_WiiMote.py` is legacy and currently not part of the active app flow.

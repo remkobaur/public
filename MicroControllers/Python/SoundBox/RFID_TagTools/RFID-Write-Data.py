@@ -99,7 +99,7 @@ def main_function():
     global continue_reading
     # This is the default key for authentication
     key = [0xFF,0xFF,0xFF,0xFF,0xFF,0xFF]
-    Number = int(raw_input("Set ID for next Token:")) 
+    Number = int(input("Set ID for next Token:")) 
     Read_Write_RFID(key,Number)        
     sleep(1)
 

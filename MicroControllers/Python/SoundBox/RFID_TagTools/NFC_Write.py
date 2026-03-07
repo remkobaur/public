@@ -31,7 +31,7 @@ def main():
 
     Sektor_ID = 8
 
-    Number = int(raw_input("Set ID for next Token:")) 
+    Number = int(input("Set ID for next Token:")) 
 
     while(True):
         # Scan for cards    
