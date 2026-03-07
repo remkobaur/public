@@ -212,6 +212,30 @@ Recommendation:
   - `01_intro.mp3`
   - `02_song.mp3`
 
+## RFID Tools
+
+Utility scripts for reading and writing RFID/NFC tags are located in:
+- `SoundBox/RFID_TagTools/`
+
+Available scripts:
+- `NFC_Read.py`: reads card UID and playlist ID (`block 8`, `byte 0`) using the `CL_NFC` implementation.
+- `NFC_Write.py`: writes a numeric playlist ID to `block 8`, then reads it back for verification.
+- `RFID-Read-Data.py`: reads raw data from RFID block 8 using the legacy `MFRC522Edit` flow.
+- `RFID-Write-Data.py`: writes test data to block 8 and prints the result for validation.
+
+Recommended workflow:
+1. Place the tag on the reader.
+2. Run `NFC_Read.py` to check current UID and ID.
+3. Run `NFC_Write.py` and enter the desired playlist ID (for example `1` to `4`).
+4. Run `NFC_Read.py` again to confirm the stored value.
+
+Notes:
+- The main app maps the tag value from `block 8`, `byte 0` to a folder via `SoundBox/Files/Sounds/Config.json`.
+  - This Config.json can be created from given music folder with the script __Tools/generate_config_json.py_.
+- Keep IDs in sync with your `Config.json` entries to avoid empty playlists.
+- Default MIFARE key used by the tools is `FF FF FF FF FF FF`.
+
+
 ## Known Notes
 
 - Volume control depends on available ALSA mixer; `CL_MusicBox` auto-discovers mixers/cards.
